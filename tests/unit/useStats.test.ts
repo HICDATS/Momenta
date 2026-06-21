@@ -174,6 +174,18 @@ describe('filterCheckInsByTimeRange', () => {
     expect(filtered).toHaveLength(2);
   });
 
+  it('timeRange=last30days 29天前的记录被包含（与桶范围对齐边界）', () => {
+    const now = Date.now();
+    const filtered = filterCheckInsByTimeRange([makeCheckIn(now - 29 * 86400000)], 'last30days');
+    expect(filtered).toHaveLength(1);
+  });
+
+  it('timeRange=last30days 30天前的记录被排除（边界）', () => {
+    const now = Date.now();
+    const filtered = filterCheckInsByTimeRange([makeCheckIn(now - 30 * 86400000)], 'last30days');
+    expect(filtered).toHaveLength(0);
+  });
+
   it('timeRange=all 返回全部记录', () => {
     const checkIns = [
       makeCheckIn(ts(2026, 5, 17)),
@@ -229,6 +241,22 @@ describe('aggregateBarData', () => {
   it('timeRange=last30days 返回30天条目', () => {
     const data = aggregateBarData([], 'last30days');
     expect(data).toHaveLength(30);
+  });
+
+  it('timeRange=last30days 29天前的打卡出现在图表数据中', () => {
+    const now = Date.now();
+    const data = aggregateBarData([makeCheckIn(now - 29 * 86400000)], 'last30days');
+    expect(data).toHaveLength(30);
+    const total = data.reduce((sum, d) => sum + d.count, 0);
+    expect(total).toBe(1);
+  });
+
+  it('timeRange=last30days 30天前的打卡不出现在图表数据中（边界）', () => {
+    const now = Date.now();
+    const data = aggregateBarData([makeCheckIn(now - 30 * 86400000)], 'last30days');
+    expect(data).toHaveLength(30);
+    const total = data.reduce((sum, d) => sum + d.count, 0);
+    expect(total).toBe(0);
   });
 
   it('timeRange=all 按月聚合，只返回有数据的月份', () => {

@@ -57,7 +57,7 @@ export function filterCheckInsByTimeRange(
     start = getMonthStart(now);
     end = getMonthEnd(now);
   } else {
-    start = now - 30 * MS_PER_DAY;
+    start = now - 29 * MS_PER_DAY;
     end = now;
   }
   return checkIns.filter((c) => c.timestamp >= start && c.timestamp <= end);
