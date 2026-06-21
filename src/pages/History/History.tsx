@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { subDays } from 'date-fns';
 import { useCheckIns } from '../../hooks/useCheckIns';
 import { CheckInCard } from '../../components/CheckInCard/CheckInCard';
 import { ConfirmDialog } from '../../components/common/ConfirmDialog/ConfirmDialog';
+import { Toast } from '../../components/common/Toast/Toast';
 import { DEFAULT_SPORT_TYPES } from '../../constants/sports';
 import { getDayKey, getWeekStart, getWeekEnd } from '../../utils/dateUtils';
 import type { CheckIn } from '../../types';
@@ -18,6 +19,7 @@ type GroupKey = (typeof GROUP_ORDER)[number];
 const FILTER_ALL = 'all';
 const LOADING_TEXT = '加载中...';
 const ERROR_PREFIX = '加载失败：';
+const DELETE_ERROR_PREFIX = '删除失败：';
 const EMPTY_TEXT = '还没有打卡记录，快去运动吧！';
 const FILTERED_EMPTY_TEXT = '没有符合条件的记录';
 const PAGE_TITLE = '历史';
@@ -58,6 +60,9 @@ export function History(): JSX.Element {
   const { checkIns, deleteCheckIn, loading, error } = useCheckIns();
   const [filterSportType, setFilterSportType] = useState<string>(FILTER_ALL);
   const [deleteTarget, setDeleteTarget] = useState<CheckIn | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const initialLoadDone = useRef(false);
 
   const filteredCheckIns = useMemo(
     () =>
@@ -72,6 +77,16 @@ export function History(): JSX.Element {
     [filteredCheckIns],
   );
 
+  useEffect(() => {
+    if (loading) return;
+    if (!initialLoadDone.current) {
+      initialLoadDone.current = true;
+      if (error) setLoadError(error);
+    } else if (error) {
+      setDeleteError(error);
+    }
+  }, [error, loading]);
+
   const handleConfirmDelete = async (): Promise<void> => {
     if (!deleteTarget) return;
     const target = deleteTarget;
@@ -79,13 +94,16 @@ export function History(): JSX.Element {
     try {
       await deleteCheckIn(target.id);
     } catch (err) {
-      setDeleteTarget(target);
-      throw err;
+      setDeleteError((err as Error).message);
     }
   };
 
   const handleCancelDelete = (): void => {
     setDeleteTarget(null);
+  };
+
+  const handleCloseDeleteError = (): void => {
+    setDeleteError(null);
   };
 
   const hasRecords = checkIns.length > 0;
@@ -96,8 +114,8 @@ export function History(): JSX.Element {
 
       {loading ? (
         <p className={styles.loading}>{LOADING_TEXT}</p>
-      ) : error ? (
-        <p className={styles.error}>{ERROR_PREFIX}{error}</p>
+      ) : loadError ? (
+        <p className={styles.error}>{ERROR_PREFIX}{loadError}</p>
       ) : !hasRecords ? (
         <p className={styles.emptyText}>{EMPTY_TEXT}</p>
       ) : (
@@ -163,6 +181,13 @@ export function History(): JSX.Element {
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
+      {deleteError && (
+        <Toast
+          message={`${DELETE_ERROR_PREFIX}${deleteError}`}
+          type="error"
+          onClose={handleCloseDeleteError}
+        />
+      )}
     </div>
   );
 }

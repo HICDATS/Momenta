@@ -496,4 +496,34 @@ describe('History 历史记录页', () => {
       within(screen.getByTestId('group-今天')).getByText('跑步'),
     ).toBeInTheDocument();
   });
+
+  it('删除失败时显示错误Toast且不隐藏记录', async () => {
+    const db = await import('../../src/db/database');
+    await seedCheckIns([
+      { sportType: 'running', timestamp: ts(2026, 5, 17, 9) },
+    ]);
+    const spy = vi
+      .spyOn(db, 'deleteCheckIn')
+      .mockRejectedValue(new Error('数据库写入错误'));
+    render(<History />);
+    await waitFor(() =>
+      expect(screen.getByTestId('group-今天')).toBeInTheDocument(),
+    );
+    fireEvent.click(screen.getByRole('button', { name: '删除' }));
+    await waitFor(() =>
+      expect(screen.getByTestId('confirm-dialog-backdrop')).toBeInTheDocument(),
+    );
+    fireEvent.click(screen.getByRole('button', { name: '确认' }));
+    await waitFor(() =>
+      expect(screen.getByRole('alert')).toBeInTheDocument(),
+    );
+    expect(screen.getByRole('alert')).toHaveTextContent(/删除失败/);
+    expect(
+      screen.queryByTestId('confirm-dialog-backdrop'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('group-今天')).getByText('跑步'),
+    ).toBeInTheDocument();
+    spy.mockRestore();
+  });
 });
