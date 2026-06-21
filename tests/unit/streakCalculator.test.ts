@@ -273,4 +273,16 @@ describe('isStreakActive', () => {
     const checkIns = [makeCheckIn(ts(2026, 5, 17))];
     expect(isStreakActive(checkIns, [])).toBe(true);
   });
+
+  it('昨天为休息日且更早有打卡返回true', () => {
+    vi.setSystemTime(new Date(2026, 5, 21, 14, 0));
+    const checkIns = [makeCheckIn(ts(2026, 5, 19))];
+    expect(isStreakActive(checkIns, [6])).toBe(true);
+  });
+
+  it('昨天和前天都是休息日且更早有打卡返回true', () => {
+    vi.setSystemTime(new Date(2026, 5, 22, 14, 0));
+    const checkIns = [makeCheckIn(ts(2026, 5, 19))];
+    expect(isStreakActive(checkIns, [0, 6])).toBe(true);
+  });
 });
