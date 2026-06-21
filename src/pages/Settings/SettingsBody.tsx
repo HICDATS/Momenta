@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { useReminders } from '../../hooks/useReminders';
 import { useSmartReminder } from '../../hooks/useSmartReminder';
 import { useGoals } from '../../hooks/useGoals';
 import { useSportTypes } from '../../hooks/useSportTypes';
@@ -7,30 +6,20 @@ import { useCheckIns } from '../../hooks/useCheckIns';
 import { Button } from '../../components/common/Button/Button';
 import { GoalProgress } from '../../components/GoalProgress/GoalProgress';
 import { SportTypeEditor } from '../../components/SportTypeEditor/SportTypeEditor';
+import { RemindersSection } from './RemindersSection';
 import styles from './Settings.module.css';
 
 const APP_VERSION = '0.1.0';
 const PRIVACY_TEXT = '数据完全本地存储，不上传任何服务器';
 const MIN_THRESHOLD = 1;
 const MAX_THRESHOLD = 30;
-const DEFAULT_NEW_REMINDER_HOUR = 20;
 const DEFAULT_NEW_GOAL_COUNT = 3;
-const DAY_LABELS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-
-function formatDays(days: number[]): string {
-  return days.map((d) => DAY_LABELS[d]).join(' ');
-}
-
-function formatTime(hour: number, minute: number): string {
-  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-}
 
 interface SettingsBodyProps {
   onClearData: () => void;
 }
 
 export function SettingsBody({ onClearData }: SettingsBodyProps): JSX.Element {
-  const { reminders, addReminder, deleteReminder, toggleReminder } = useReminders();
   const { enabled, threshold, setEnabled, setThreshold } = useSmartReminder();
   const { checkIns } = useCheckIns();
   const { goalsWithProgress, addGoal, deleteGoal } = useGoals(checkIns);
@@ -41,7 +30,7 @@ export function SettingsBody({ onClearData }: SettingsBodyProps): JSX.Element {
     const data = {
       checkIns,
       goals: goalsWithProgress.map((g) => g.goal),
-      reminders,
+      reminders: [],
       customSportTypes,
       exportDate: new Date().toISOString(),
     };
@@ -54,19 +43,7 @@ export function SettingsBody({ onClearData }: SettingsBodyProps): JSX.Element {
     a.download = `momenta-export-${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
-  }, [checkIns, goalsWithProgress, reminders, customSportTypes]);
-
-  const handleAddReminder = useCallback((): void => {
-    addReminder({
-      sportType: undefined,
-      days: [1, 3, 5],
-      hour: DEFAULT_NEW_REMINDER_HOUR,
-      minute: 0,
-      message: '新提醒',
-      enabled: true,
-      skipIfCheckedIn: true,
-    });
-  }, [addReminder]);
+  }, [checkIns, goalsWithProgress, customSportTypes]);
 
   const handleAddGoal = useCallback((): void => {
     addGoal({
@@ -88,35 +65,7 @@ export function SettingsBody({ onClearData }: SettingsBodyProps): JSX.Element {
 
   return (
     <div className={styles.body}>
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>提醒设置</h2>
-        <ul className={styles.list}>
-          {reminders.map((r) => (
-            <li key={r.id} className={styles.listItem}>
-              <div className={styles.reminderInfo}>
-                <span className={styles.reminderTime}>
-                  {formatDays(r.days)} {formatTime(r.hour, r.minute)}
-                </span>
-                <span className={styles.reminderMessage}>{r.message}</span>
-              </div>
-              <div className={styles.itemActions}>
-                <button
-                  type="button"
-                  className={styles.toggle}
-                  role="switch"
-                  aria-checked={r.enabled}
-                  aria-label={`开关-${r.message}`}
-                  onClick={() => toggleReminder(r.id)}
-                />
-                <Button variant="secondary" size="sm" onClick={() => deleteReminder(r.id)}>
-                  删除
-                </Button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <Button variant="secondary" onClick={handleAddReminder}>添加提醒</Button>
-      </section>
+      <RemindersSection />
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>智能提醒</h2>
