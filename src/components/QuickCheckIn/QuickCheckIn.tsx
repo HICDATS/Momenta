@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   Dumbbell,
   Footprints,
@@ -51,6 +51,10 @@ export function QuickCheckIn({
   const [note, setNote] = useState<string>('');
   const [noteError, setNoteError] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
+
+  const handleToastClose = useCallback((): void => {
+    setToast(null);
+  }, []);
 
   const resetForm = (): void => {
     setSelectedSport(null);
@@ -155,7 +159,7 @@ export function QuickCheckIn({
         <Toast
           message={toast.message}
           type={toast.type}
-          onClose={() => setToast(null)}
+          onClose={handleToastClose}
         />
       )}
     </div>

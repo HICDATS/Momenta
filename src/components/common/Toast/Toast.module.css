@@ -16,6 +16,7 @@
 
 .success {
   background-color: var(--color-success);
+  animation: checkInSuccess 0.4s ease;
 }
 
 .error {
