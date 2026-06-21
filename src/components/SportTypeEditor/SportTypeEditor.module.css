@@ -1,0 +1,133 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.nameInput {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  color: var(--color-text);
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.nameInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.nameCounter {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  text-align: right;
+}
+
+.error {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.iconGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.iconOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.iconOption:active {
+  transform: scale(0.94);
+}
+
+.iconSelected {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.iconImage {
+  width: 24px;
+  height: 24px;
+  color: var(--color-text);
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: var(--spacing-xs);
+}
+
+.colorOption {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+
+.colorOption:active {
+  transform: scale(0.9);
+}
+
+.colorSelected {
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-bg-white);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+  margin-top: var(--spacing-sm);
+}
+
+.cancelButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.saveButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary);
+  color: var(--color-bg-white);
+  font-size: var(--font-size-md);
+  min-height: 44px;
+  min-width: 44px;
+}
