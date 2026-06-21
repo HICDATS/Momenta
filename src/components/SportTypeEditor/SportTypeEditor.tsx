@@ -44,7 +44,7 @@ export function SportTypeEditor({
   open,
   onClose,
   onSaved,
-}: SportTypeEditorProps): JSX.Element | null {
+}: SportTypeEditorProps): JSX.Element {
   const { sportTypes, addSportType } = useSportTypes();
   const [name, setName] = useState<string>('');
   const [icon, setIcon] = useState<string>(DEFAULT_ICON);
