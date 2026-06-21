@@ -1,6 +1,11 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useStats } from '../../src/hooks/useStats';
+import {
+  filterCheckInsByTimeRange,
+  aggregateBarData,
+  computePieData,
+} from '../../src/components/StatsChart/StatsChart';
 import type { CheckIn } from '../../src/types';
 
 function ts(year: number, month: number, day: number, hour = 12): number {
@@ -123,5 +128,191 @@ describe('useStats', () => {
     const first = result.current;
     rerender();
     expect(result.current).toBe(first);
+  });
+});
+
+describe('filterCheckInsByTimeRange', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('timeRange=week 只返回本周记录（周一起始）', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 15)),
+      makeCheckIn(ts(2026, 5, 14)),
+      makeCheckIn(ts(2026, 5, 17)),
+    ];
+    const filtered = filterCheckInsByTimeRange(checkIns, 'week');
+    expect(filtered).toHaveLength(2);
+    expect(filtered.map((c) => c.id)).toEqual(
+      expect.arrayContaining([`checkin-${ts(2026, 5, 15)}`, `checkin-${ts(2026, 5, 17)}`]),
+    );
+  });
+
+  it('timeRange=month 只返回本月记录', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 1)),
+      makeCheckIn(ts(2026, 4, 30)),
+      makeCheckIn(ts(2026, 5, 17)),
+    ];
+    const filtered = filterCheckInsByTimeRange(checkIns, 'month');
+    expect(filtered).toHaveLength(2);
+  });
+
+  it('timeRange=last30days 只返回最近30天记录', () => {
+    const now = Date.now();
+    const checkIns = [
+      makeCheckIn(now),
+      makeCheckIn(now - 29 * 86400000),
+      makeCheckIn(now - 31 * 86400000),
+    ];
+    const filtered = filterCheckInsByTimeRange(checkIns, 'last30days');
+    expect(filtered).toHaveLength(2);
+  });
+
+  it('timeRange=all 返回全部记录', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 17)),
+      makeCheckIn(ts(2025, 0, 1)),
+      makeCheckIn(ts(2024, 11, 31)),
+    ];
+    const filtered = filterCheckInsByTimeRange(checkIns, 'all');
+    expect(filtered).toHaveLength(3);
+  });
+
+  it('空数组返回空数组', () => {
+    expect(filterCheckInsByTimeRange([], 'week')).toEqual([]);
+    expect(filterCheckInsByTimeRange([], 'all')).toEqual([]);
+  });
+});
+
+describe('aggregateBarData', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('timeRange=week 返回本周7天条目，按日聚合', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 15)),
+      makeCheckIn(ts(2026, 5, 15)),
+      makeCheckIn(ts(2026, 5, 17)),
+    ];
+    const data = aggregateBarData(checkIns, 'week');
+    expect(data).toHaveLength(7);
+    const monday = data.find((d) => d.label === '周一');
+    expect(monday?.count).toBe(2);
+    const wednesday = data.find((d) => d.label === '周三');
+    expect(wednesday?.count).toBe(1);
+  });
+
+  it('timeRange=week 空数组返回7个零计数条目', () => {
+    const data = aggregateBarData([], 'week');
+    expect(data).toHaveLength(7);
+    expect(data.every((d) => d.count === 0)).toBe(true);
+  });
+
+  it('timeRange=month 返回本月各天条目', () => {
+    const data = aggregateBarData([], 'month');
+    expect(data).toHaveLength(30);
+    expect(data[0].label).toBe('06-01');
+    expect(data[29].label).toBe('06-30');
+  });
+
+  it('timeRange=last30days 返回30天条目', () => {
+    const data = aggregateBarData([], 'last30days');
+    expect(data).toHaveLength(30);
+  });
+
+  it('timeRange=all 按月聚合，只返回有数据的月份', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 15)),
+      makeCheckIn(ts(2026, 5, 17)),
+      makeCheckIn(ts(2026, 4, 10)),
+      makeCheckIn(ts(2025, 11, 1)),
+    ];
+    const data = aggregateBarData(checkIns, 'all');
+    expect(data).toHaveLength(3);
+    const june = data.find((d) => d.label === '2026-06');
+    expect(june?.count).toBe(2);
+    const may = data.find((d) => d.label === '2026-05');
+    expect(may?.count).toBe(1);
+    const dec = data.find((d) => d.label === '2025-12');
+    expect(dec?.count).toBe(1);
+  });
+
+  it('timeRange=all 空数组返回空数组', () => {
+    expect(aggregateBarData([], 'all')).toEqual([]);
+  });
+
+  it('过滤掉时间范围外的打卡记录后再聚合', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 17)),
+      makeCheckIn(ts(2026, 4, 17)),
+    ];
+    const data = aggregateBarData(checkIns, 'week');
+    expect(data).toHaveLength(7);
+    const total = data.reduce((sum, d) => sum + d.count, 0);
+    expect(total).toBe(1);
+  });
+});
+
+describe('computePieData', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('按运动类型聚合，返回 {name, value, color}', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 17), 'running'),
+      makeCheckIn(ts(2026, 5, 16), 'running'),
+      makeCheckIn(ts(2026, 5, 15), 'fitness'),
+    ];
+    const data = computePieData(checkIns);
+    expect(data).toHaveLength(2);
+    const running = data.find((d) => d.name === '跑步');
+    expect(running?.value).toBe(2);
+    expect(running?.color).toBe('#00B894');
+    const fitness = data.find((d) => d.name === '健身');
+    expect(fitness?.value).toBe(1);
+    expect(fitness?.color).toBe('#FF6B6B');
+  });
+
+  it('空数组返回空数组', () => {
+    expect(computePieData([])).toEqual([]);
+  });
+
+  it('未注册的运动类型使用默认颜色', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 17), 'unknown_sport'),
+    ];
+    const data = computePieData(checkIns);
+    expect(data).toHaveLength(1);
+    expect(data[0].value).toBe(1);
+    expect(data[0].color).not.toBe('');
+  });
+
+  it('结果按 value 降序排列', () => {
+    const checkIns = [
+      makeCheckIn(ts(2026, 5, 17), 'fitness'),
+      makeCheckIn(ts(2026, 5, 16), 'fitness'),
+      makeCheckIn(ts(2026, 5, 15), 'fitness'),
+      makeCheckIn(ts(2026, 5, 14), 'running'),
+      makeCheckIn(ts(2026, 5, 13), 'running'),
+    ];
+    const data = computePieData(checkIns);
+    expect(data[0].value).toBe(3);
+    expect(data[1].value).toBe(2);
   });
 });
