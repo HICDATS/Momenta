@@ -40,5 +40,8 @@ yarn-error.log*
 # Vite
 .vite/
 
+# TypeScript build info
+*.tsbuildinfo
+
 # Service Worker generated
 dev-dist/
