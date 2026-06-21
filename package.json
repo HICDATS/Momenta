@@ -16,25 +16,26 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
+    "dexie": "^4.0.10",
+    "lucide-react": "^0.469.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.0",
-    "dexie": "^4.0.10",
-    "recharts": "^2.15.0",
-    "date-fns": "^4.1.0",
-    "lucide-react": "^0.469.0"
+    "recharts": "^2.15.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^22.10.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@types/node": "^22.10.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^25.0.0",
     "typescript": "^5.6.3",
     "vite": "^6.0.0",
-    "@vitejs/plugin-react": "^4.3.4",
     "vite-plugin-pwa": "^0.21.0",
-    "vitest": "^3.0.0",
-    "@testing-library/react": "^16.1.0",
-    "@testing-library/jest-dom": "^6.6.0",
-    "jsdom": "^25.0.0"
+    "vitest": "^3.0.0"
   }
 }
