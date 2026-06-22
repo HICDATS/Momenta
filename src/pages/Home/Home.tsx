@@ -1,4 +1,4 @@
-import { Link, useInRouterContext } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useCheckIns } from '../../hooks/useCheckIns';
 import { StreakDisplay } from '../../components/StreakDisplay/StreakDisplay';
 import { StatsCard } from '../../components/StatsCard/StatsCard';
@@ -17,18 +17,7 @@ const PAGE_TITLE = '首页';
 
 export function Home(): JSX.Element {
   const { checkIns, loading, error, refresh } = useCheckIns();
-  const inRouter = useInRouterContext();
   const recentCheckIns = checkIns.slice(0, RECENT_PREVIEW_COUNT);
-
-  const viewAllLink = inRouter ? (
-    <Link to="/history" className={styles.viewAll}>
-      {VIEW_ALL}
-    </Link>
-  ) : (
-    <a href="/history" className={styles.viewAll}>
-      {VIEW_ALL}
-    </a>
-  );
 
   return (
     <div className={styles.home} data-testid="page-home">
@@ -45,7 +34,9 @@ export function Home(): JSX.Element {
           <section className={styles.recentSection}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>{RECENT_TITLE}</h2>
-              {viewAllLink}
+              <Link to="/history" className={styles.viewAll}>
+                {VIEW_ALL}
+              </Link>
             </div>
             {recentCheckIns.length > 0 ? (
               <ul className={styles.recentList} data-testid="recent-list">

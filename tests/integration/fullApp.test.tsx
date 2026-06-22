@@ -107,7 +107,7 @@ describe('全应用页面切换集成测试', () => {
     ).toBeInTheDocument();
   });
 
-  it('导航到成就页→显示8个成就', async () => {
+  it('导航到成就页→显示7个成就', async () => {
     renderApp('/');
     await waitFor(() =>
       expect(screen.getByTestId('page-home')).toBeInTheDocument(),
@@ -117,8 +117,8 @@ describe('全应用页面切换集成测试', () => {
       expect(screen.getByTestId('page-achievements')).toBeInTheDocument(),
     );
     expect(screen.getByTestId('achievements-grid')).toBeInTheDocument();
-    expect(screen.getAllByTestId('achievement-badge')).toHaveLength(8);
-    expect(screen.getByText('已解锁 0/8')).toBeInTheDocument();
+    expect(screen.getAllByTestId('achievement-badge')).toHaveLength(7);
+    expect(screen.getByText('已解锁 0/7')).toBeInTheDocument();
   });
 
   it('导航到统计页→显示图表', async () => {
@@ -168,7 +168,7 @@ describe('全应用页面切换集成测试', () => {
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '成就' }));
     await waitFor(() =>
-      expect(screen.getByText('已解锁 1/8')).toBeInTheDocument(),
+      expect(screen.getByText('已解锁 1/7')).toBeInTheDocument(),
     );
     fireEvent.click(screen.getByRole('link', { name: '历史' }));
     await waitFor(() =>

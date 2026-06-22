@@ -109,7 +109,7 @@ describe('完整打卡流程集成测试', () => {
     await waitFor(() =>
       expect(screen.getByText('初次启航')).toBeInTheDocument(),
     );
-    expect(screen.getByText('已解锁 1/8')).toBeInTheDocument();
+    expect(screen.getByText('已解锁 1/7')).toBeInTheDocument();
   });
 
   it('删除打卡记录→Streak重新计算→统计更新', async () => {
@@ -155,7 +155,7 @@ describe('完整打卡流程集成测试', () => {
     await waitFor(() =>
       expect(screen.getByText('三日燃')).toBeInTheDocument(),
     );
-    expect(screen.getByText('已解锁 2/8')).toBeInTheDocument();
+    expect(screen.getByText('已解锁 2/7')).toBeInTheDocument();
   });
 
   it('同一天多次打卡→Streak只算1天→三日燃未解锁', async () => {
@@ -170,7 +170,7 @@ describe('完整打卡流程集成测试', () => {
     );
     fireEvent.click(screen.getByRole('link', { name: '成就' }));
     await waitFor(() =>
-      expect(screen.getByText('已解锁 1/8')).toBeInTheDocument(),
+      expect(screen.getByText('已解锁 1/7')).toBeInTheDocument(),
     );
   });
 

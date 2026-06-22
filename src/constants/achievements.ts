@@ -50,11 +50,4 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: 'Sparkles',
     condition: { type: 'sport_variety', count: 5 },
   },
-  {
-    id: 'goal-achiever',
-    name: '目标达成',
-    description: '完成一次设定的周目标',
-    icon: 'Target',
-    condition: { type: 'goal_complete' },
-  },
 ];

@@ -10,6 +10,7 @@ const REMINDERS_KEY = 'momenta-reminders';
 const CUSTOM_SPORTS_KEY = 'momenta-custom-sports';
 const SMART_REMINDER_ENABLED_KEY = 'momenta-smart-reminder-enabled';
 const SMART_REMINDER_THRESHOLD_KEY = 'momenta-smart-reminder-threshold';
+const REST_DAYS_KEY = 'momenta-rest-days';
 const CLEAR_TITLE = '清除所有数据';
 const CLEAR_MESSAGE = '确定要清除所有打卡记录和设置吗？此操作不可恢复。';
 const CLEAR_CONFIRM = '确认清除';
@@ -37,6 +38,7 @@ export function Settings(): JSX.Element {
       localStorage.removeItem(CUSTOM_SPORTS_KEY);
       localStorage.removeItem(SMART_REMINDER_ENABLED_KEY);
       localStorage.removeItem(SMART_REMINDER_THRESHOLD_KEY);
+      localStorage.removeItem(REST_DAYS_KEY);
       setToast({ message: CLEAR_SUCCESS, type: 'success' });
       setDataVersion((v) => v + 1);
     } catch {

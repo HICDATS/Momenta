@@ -29,8 +29,8 @@ function findProgress(
 }
 
 describe('ACHIEVEMENTS 常量', () => {
-  it('包含至少8个预设成就', () => {
-    expect(ACHIEVEMENTS.length).toBeGreaterThanOrEqual(8);
+  it('包含至少7个预设成就', () => {
+    expect(ACHIEVEMENTS.length).toBeGreaterThanOrEqual(7);
   });
 
   it('每个成就包含必需字段(id/name/description/icon/condition)', () => {
@@ -52,7 +52,7 @@ describe('ACHIEVEMENTS 常量', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('包含PRD要求的8种成就', () => {
+  it('包含PRD要求的7种成就', () => {
     const requiredIds = [
       'first-checkin',
       'three-day-streak',
@@ -61,7 +61,6 @@ describe('ACHIEVEMENTS 常量', () => {
       'basketball-master',
       'fitness-fanatic',
       'sport-explorer',
-      'goal-achiever',
     ];
     const ids = ACHIEVEMENTS.map((a) => a.id);
     for (const id of requiredIds) {
@@ -69,13 +68,12 @@ describe('ACHIEVEMENTS 常量', () => {
     }
   });
 
-  it('condition type 为5种之一', () => {
+  it('condition type 为4种之一', () => {
     const validTypes = [
       'total_count',
       'streak_days',
       'monthly_count',
       'sport_variety',
-      'goal_complete',
     ];
     for (const a of ACHIEVEMENTS) {
       expect(validTypes).toContain(a.condition.type);
@@ -93,9 +91,9 @@ describe('useAchievements', () => {
     vi.useRealTimers();
   });
 
-  it('返回所有 8 个预设成就的进度', () => {
+  it('返回所有 7 个预设成就的进度', () => {
     const { result } = renderHook(() => useAchievements([]));
-    expect(result.current).toHaveLength(8);
+    expect(result.current).toHaveLength(7);
     const ids = result.current.map((p) => p.achievement.id);
     expect(ids).toContain('first-checkin');
     expect(ids).toContain('three-day-streak');
@@ -104,7 +102,6 @@ describe('useAchievements', () => {
     expect(ids).toContain('basketball-master');
     expect(ids).toContain('fitness-fanatic');
     expect(ids).toContain('sport-explorer');
-    expect(ids).toContain('goal-achiever');
   });
 
   it('每个 AchievementProgress 包含必需字段', () => {
@@ -309,17 +306,6 @@ describe('useAchievements', () => {
     expect(explorer.currentCount).toBe(4);
     expect(explorer.targetCount).toBe(5);
     expect(explorer.progress).toBeCloseTo(4 / 5);
-  });
-
-  it('goal_complete: 始终返回未解锁，currentCount=0, targetCount=1 (占位)', () => {
-    const checkIns = [makeCheckIn(ts(2026, 5, 17))];
-    const { result } = renderHook(() => useAchievements(checkIns));
-    const goal = findProgress(result.current, 'goal-achiever');
-    expect(goal.unlocked).toBe(false);
-    expect(goal.currentCount).toBe(0);
-    expect(goal.targetCount).toBe(1);
-    expect(goal.progress).toBe(0);
-    expect(goal.unlockedAt).toBeUndefined();
   });
 
   it('unlockedAt: 已解锁为当前时间戳, 未解锁无值', () => {
