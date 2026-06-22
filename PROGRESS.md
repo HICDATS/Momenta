@@ -4,7 +4,7 @@
 Momenta - 运动打卡程序
 
 ## 当前阶段
-阶段5：实现与迭代 - 5.1 创建工作区隔离（using-git-worktrees）
+MVP完成 - 已合并到main分支
 
 ## 阶段完成状态
 
@@ -51,11 +51,11 @@ Momenta - 运动打卡程序
 - [x] 5.1 创建工作区隔离（using-git-worktrees）← ✅ 2026-06-21 .worktrees/develop
 - [x] 5.2 创建任务链（TASKCHAIN.md）← ✅ 2026-06-21 20个任务
 - [x] 5.3 用户确认 TASKCHAIN.md ← ✅ 2026-06-21 用户确认通过
-- [ ] 5.4 初始化项目框架（T01）← **当前任务**
-- [ ] 5.5 逐步实现核心功能（详见 TASKCHAIN.md，使用subagent-driven-development）
-- [ ] 5.6 优化实现细节
-- [ ] 5.7 完成开发收尾（finishing-a-development-branch）
-- [ ] 5.0 MVP完成
+- [x] 5.4 初始化项目框架（T01）← ✅ 完成
+- [x] 5.5 逐步实现核心功能（T02-T19）← ✅ 全部完成
+- [x] 5.6 优化实现细节（T20）← ✅ 集成测试与优化完成
+- [x] 5.7 完成开发收尾（finishing-a-development-branch）← ✅ 合并到main
+- [x] 5.0 MVP完成 ← ✅ 442测试通过，构建成功
 
 ## 用户确认记录
 
@@ -75,4 +75,8 @@ Momenta - 运动打卡程序
 ## 遇到的问题与解决
 | 日期 | 问题描述 | 解决方案 |
 |------|----------|----------|
-| | | |
+| 2026-06-22 | Vitest 2.x与Vite 6类型冲突 | 升级到Vitest 3.x |
+| 2026-06-22 | lucide-react无Basketball图标 | 用Volleyball替代 |
+| 2026-06-22 | Home.tsx Layout测试无Router | useInRouterContext workaround（后已移除） |
+| 2026-06-22 | PWA图标缺失 | 创建public/pwa-192x192.png和pwa-512x512.png |
+| 2026-06-22 | goal_complete成就无法解锁 | 移除该成就，避免永久锁定徽章 |
