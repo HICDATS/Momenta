@@ -113,7 +113,7 @@ export function RemindersSection(): JSX.Element {
     });
   }, []);
 
-  const renderEditForm = (id: string): JSX.Element => (
+  const renderEditForm = (): JSX.Element => (
     <div className={styles.editFormExpanded}>
       <div className={styles.editField}>
         <label className={styles.editLabel}>文案</label>
@@ -217,7 +217,7 @@ export function RemindersSection(): JSX.Element {
                 {formatDays(r.days)} {formatTime(r.hour, r.minute)}
               </span>
               {editingId === r.id ? (
-                renderEditForm(r.id)
+                renderEditForm()
               ) : (
                 <span className={styles.reminderMessage}>{r.message}</span>
               )}
