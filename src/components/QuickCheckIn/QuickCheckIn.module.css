@@ -1,5 +1,5 @@
 .container {
-  padding: var(--spacing-md);
+  padding: 0;
 }
 
 .grid {
@@ -15,26 +15,26 @@
   justify-content: center;
   gap: var(--spacing-xs);
   padding: var(--spacing-md) var(--spacing-sm);
-  min-height: 44px;
-  border-radius: var(--radius-md);
-  background-color: var(--color-bg-white);
-  border: 2px solid var(--color-bg);
-  transition: transform 0.1s ease, border-color 0.1s ease;
+  min-height: 64px;
+  background-color: transparent;
+  border: 1px solid var(--fog-300);
+  transition: none;
+  cursor: pointer;
 }
 
 .sportButton:active {
-  transform: scale(0.96);
-  border-color: var(--color-primary);
+  border-color: var(--ember-700);
 }
 
 .icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .name {
+  font-family: var(--font-body);
   font-size: var(--font-size-sm);
-  color: var(--color-text);
+  color: var(--ink-900);
 }
 
 .checkInForm {
@@ -50,34 +50,43 @@
 }
 
 .modalIcon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .sportName {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 144;
+  font-size: var(--font-size-xl);
+  color: var(--ink-900);
 }
 
 .timeDisplay {
-  font-size: var(--font-size-md);
-  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--fog-300);
 }
 
 .noteInput {
   width: 100%;
   padding: var(--spacing-sm);
-  border: 1px solid var(--color-bg);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--fog-300);
+  border-radius: 0;
+  background-color: transparent;
   font-size: var(--font-size-sm);
   font-family: inherit;
   resize: vertical;
   min-height: 44px;
+  color: var(--ink-900);
+}
+
+.noteInput:focus {
+  border-color: var(--ember-500);
+  outline: none;
 }
 
 .error {
-  color: var(--color-danger);
+  color: var(--ember-700);
   font-size: var(--font-size-sm);
 }
 
@@ -87,20 +96,26 @@
   justify-content: flex-end;
 }
 
-.cancelButton {
+.cancelButton,
+.confirmButton {
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  background-color: var(--color-bg);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-body);
   min-height: 44px;
+  background-color: transparent;
+  border: 1px solid var(--fog-300);
+  color: var(--ink-900);
+  cursor: pointer;
+  transition: none;
 }
 
 .confirmButton {
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  background-color: var(--color-primary);
-  color: var(--color-bg-white);
-  font-size: var(--font-size-md);
-  min-height: 44px;
+  background-color: var(--ember-500);
+  border-color: var(--ember-500);
+  color: var(--paper-50);
+}
+
+.cancelButton:active,
+.confirmButton:active {
+  opacity: 0.7;
 }
