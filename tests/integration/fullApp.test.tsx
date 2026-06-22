@@ -77,7 +77,7 @@ describe('全应用页面切换集成测试', () => {
   it('首页渲染正常（StreakDisplay+StatsCard+QuickCheckIn+最近记录区域）', async () => {
     renderApp('/');
     await waitFor(() =>
-      expect(screen.getByRole('grid')).toBeInTheDocument(),
+      expect(screen.getAllByRole('grid').length).toBeGreaterThan(0),
     );
     expect(screen.getByText('本周')).toBeInTheDocument();
     expect(screen.getByText('本月')).toBeInTheDocument();
@@ -85,6 +85,14 @@ describe('全应用页面切换集成测试', () => {
     expect(
       screen.getByText('还没有打卡记录，快去运动吧！'),
     ).toBeInTheDocument();
+  });
+
+  it('首页显示热图和日期 eyebrow', async () => {
+    renderApp('/');
+    await waitFor(() =>
+      expect(screen.getByTestId('heatmap')).toBeInTheDocument(),
+    );
+    expect(screen.getByTestId('home-eyebrow')).toBeInTheDocument();
   });
 
   it('导航到历史页→显示打卡记录', async () => {

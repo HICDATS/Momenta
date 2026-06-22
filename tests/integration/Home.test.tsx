@@ -87,7 +87,9 @@ describe('Home 首页 Dashboard', () => {
 
   it('渲染 QuickCheckIn（运动类型网格）', async () => {
     renderHome();
-    await waitFor(() => expect(screen.getByRole('grid')).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getAllByRole('grid').length).toBeGreaterThan(0),
+    );
     for (const sport of DEFAULT_SPORT_TYPES) {
       expect(
         screen.getByRole('button', { name: sport.name }),

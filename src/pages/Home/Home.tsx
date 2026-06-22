@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCheckIns } from '../../hooks/useCheckIns';
 import { StreakDisplay } from '../../components/StreakDisplay/StreakDisplay';
 import { StatsCard } from '../../components/StatsCard/StatsCard';
+import { Heatmap } from '../../components/Heatmap/Heatmap';
 import { QuickCheckIn } from '../../components/QuickCheckIn/QuickCheckIn';
 import { formatDateTime } from '../../utils/dateUtils';
 import { DEFAULT_SPORT_TYPES } from '../../constants/sports';
@@ -13,24 +15,67 @@ const ERROR_PREFIX = '加载失败：';
 const EMPTY_TEXT = '还没有打卡记录，快去运动吧！';
 const RECENT_TITLE = '最近打卡';
 const VIEW_ALL = '查看全部';
-const PAGE_TITLE = '首页';
+const TODAY_LABEL = '今日运动';
+
+const ENERGY_BAR_TOTAL_MS = 3400;
+
+function formatEyebrow(timestamp: number): string {
+  const d = new Date(timestamp);
+  const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  return `${days[d.getDay()]} · ${d.getDate()} ${months[d.getMonth()]}`;
+}
 
 export function Home(): JSX.Element {
   const { checkIns, loading, error, refresh } = useCheckIns();
   const recentCheckIns = checkIns.slice(0, RECENT_PREVIEW_COUNT);
+  const [showEnergyBar, setShowEnergyBar] = useState(false);
+
+  useEffect(() => {
+    if (!showEnergyBar) return;
+    const fadeTimer = setTimeout(() => {
+      setShowEnergyBar(false);
+    }, ENERGY_BAR_TOTAL_MS);
+    return () => clearTimeout(fadeTimer);
+  }, [showEnergyBar]);
+
+  const handleCheckInComplete = (): void => {
+    setShowEnergyBar(true);
+    void refresh();
+  };
 
   return (
     <div className={styles.home} data-testid="page-home">
-      <h1 className={styles.srOnly}>{PAGE_TITLE}</h1>
+      <h1 className={styles.srOnly}>首页</h1>
       {loading ? (
         <p className={styles.loading}>{LOADING_TEXT}</p>
       ) : error ? (
         <p className={styles.error}>{ERROR_PREFIX}{error}</p>
       ) : (
         <>
+          <div className={styles.eyebrow} data-testid="home-eyebrow">
+            <span className={styles.eyebrowMark} aria-hidden="true" />
+            <span>{formatEyebrow(Date.now())}</span>
+          </div>
+
+          {showEnergyBar && (
+            <div
+              className={styles.energyBar}
+              data-testid="energy-bar"
+              role="presentation"
+            />
+          )}
+
           <StreakDisplay checkIns={checkIns} />
+          <Heatmap checkIns={checkIns} />
           <StatsCard checkIns={checkIns} />
-          <QuickCheckIn onCheckInComplete={() => { void refresh(); }} />
+
+          <div className={styles.divider}>
+            <span className={styles.dividerText}>{TODAY_LABEL}</span>
+          </div>
+
+          <QuickCheckIn onCheckInComplete={handleCheckInComplete} />
+
           <section className={styles.recentSection}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>{RECENT_TITLE}</h2>
