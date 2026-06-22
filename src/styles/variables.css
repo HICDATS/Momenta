@@ -1,29 +1,33 @@
 :root {
-  /* 主色调 */
-  --color-primary: #FF6B6B;
-  --color-primary-hover: #FF5252;
-  --color-primary-light: #FFE4E4;
+  /* === 运动场晨光 · 5 token 纯色板 === */
+  --ink-900: #1F1B16;
+  --paper-50: #FAF6F0;
+  --ember-500: #FF6B6B;
+  --ember-700: #E64C4C;
+  --fog-300: #C7BEB2;
 
-  /* 辅助色 */
-  --color-text: #2D3436;
-  --color-text-secondary: #636E72;
-  --color-text-light: #B2BEC3;
+  /* === 字体 === */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 
-  /* 背景色 */
-  --color-bg: #F8F9FA;
-  --color-bg-white: #FFFFFF;
-  --color-bg-card: #FFFFFF;
+  /* === 兼容旧 token（被新 token 取代，逐步迁移） === */
+  --color-primary: var(--ember-500);
+  --color-primary-hover: var(--ember-700);
+  --color-primary-light: rgba(255, 107, 107, 0.12);
+  --color-text: var(--ink-900);
+  --color-text-secondary: #5C5751;
+  --color-text-light: var(--fog-300);
+  --color-bg: var(--paper-50);
+  --color-bg-white: var(--paper-50);
+  --color-bg-card: var(--paper-50);
+  --color-success: #4A7C59;
+  --color-warning: #B8860B;
+  --color-danger: var(--ember-700);
+  --color-info: #5A6B7C;
+  --color-overlay: rgba(31, 27, 22, 0.4);
 
-  /* 状态色 */
-  --color-success: #00B894;
-  --color-warning: #FDCB6E;
-  --color-danger: #FF7675;
-  --color-info: #74B9FF;
-
-  /* 遮罩层 */
-  --color-overlay: rgba(0, 0, 0, 0.5);
-
-  /* 间距 */
+  /* === 间距 === */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -31,30 +35,34 @@
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
 
-  /* 字体 */
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 20px;
-  --font-size-xl: 28px;
+  /* === 字号 === */
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-md: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
   --font-size-2xl: 40px;
+  --font-size-display: 64px;
+
+  /* === 字重 === */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
+  --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* 圆角和阴影 */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  /* === 圆角 === */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  /* === 阴影（仅用于分隔，无辉光） === */
+  --shadow-hairline: inset 0 0 0 1px var(--fog-300);
 
-  /* 布局 */
-  --nav-height: 60px;
-  --max-width: 480px;
+  /* === 布局 === */
+  --nav-height: 64px;
+  --max-width: 420px;
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --heatmap-cell: 14px;
+  --heatmap-gap: 2px;
 }
