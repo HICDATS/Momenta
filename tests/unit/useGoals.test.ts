@@ -136,6 +136,70 @@ describe('useGoals', () => {
     expect(stored.find((g: Goal) => g.id === idToDelete)).toBeUndefined();
   });
 
+  it('updateGoal: 更新目标字段并保存到localStorage', () => {
+    const { result } = renderHook(() => useGoals([]));
+    act(() => {
+      result.current.addGoal(
+        makeGoalInput({ period: 'weekly', targetCount: 3 }),
+      );
+    });
+    const id = result.current.goals[0].id;
+
+    act(() => {
+      result.current.updateGoal(id, {
+        targetCount: 7,
+        period: 'monthly',
+        sportType: 'fitness',
+      });
+    });
+
+    const updated = result.current.goals.find((g) => g.id === id)!;
+    expect(updated.targetCount).toBe(7);
+    expect(updated.period).toBe('monthly');
+    expect(updated.sportType).toBe('fitness');
+
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) as string);
+    expect(stored[0].targetCount).toBe(7);
+    expect(stored[0].period).toBe('monthly');
+    expect(stored[0].sportType).toBe('fitness');
+  });
+
+  it('updateGoal: 部分更新不影响其他字段', () => {
+    const { result } = renderHook(() => useGoals([]));
+    act(() => {
+      result.current.addGoal(
+        makeGoalInput({ period: 'weekly', targetCount: 3, sportType: 'fitness' }),
+      );
+    });
+    const id = result.current.goals[0].id;
+
+    act(() => {
+      result.current.updateGoal(id, { targetCount: 10 });
+    });
+
+    const updated = result.current.goals.find((g) => g.id === id)!;
+    expect(updated.targetCount).toBe(10);
+    expect(updated.period).toBe('weekly');
+    expect(updated.sportType).toBe('fitness');
+  });
+
+  it('updateGoal: 更新不存在的id不影响列表', () => {
+    const { result } = renderHook(() => useGoals([]));
+    act(() => {
+      result.current.addGoal(makeGoalInput({ targetCount: 3 }));
+    });
+    const before = result.current.goals[0].targetCount;
+    act(() => {
+      result.current.updateGoal('non-existent', { targetCount: 99 });
+    });
+    expect(result.current.goals[0].targetCount).toBe(before);
+  });
+
+  it('返回值包含 updateGoal 函数', () => {
+    const { result } = renderHook(() => useGoals([]));
+    expect(typeof result.current.updateGoal).toBe('function');
+  });
+
   it('deleteGoal: 删除不存在的id不影响列表', () => {
     const { result } = renderHook(() => useGoals([]));
     act(() => {

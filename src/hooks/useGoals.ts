@@ -20,6 +20,7 @@ export interface UseGoalsResult {
   goals: Goal[];
   goalsWithProgress: GoalWithProgress[];
   addGoal: (goal: Omit<Goal, 'id' | 'createdAt'>) => void;
+  updateGoal: (id: string, updates: Partial<Omit<Goal, 'id' | 'createdAt'>>) => void;
   deleteGoal: (id: string) => void;
 }
 
@@ -73,10 +74,21 @@ export function useGoals(checkIns: CheckIn[]): UseGoalsResult {
     [goals, setGoals],
   );
 
+  const updateGoal = useCallback(
+    (id: string, updates: Partial<Omit<Goal, 'id' | 'createdAt'>>): void => {
+      setGoals(
+        goals.map((goal) =>
+          goal.id === id ? { ...goal, ...updates } : goal,
+        ),
+      );
+    },
+    [goals, setGoals],
+  );
+
   const goalsWithProgress = useMemo<GoalWithProgress[]>(() => {
     const now = Date.now();
     return goals.map((goal) => computeProgress(goal, checkIns, now));
   }, [goals, checkIns]);
 
-  return { goals, goalsWithProgress, addGoal, deleteGoal };
+  return { goals, goalsWithProgress, addGoal, updateGoal, deleteGoal };
 }
