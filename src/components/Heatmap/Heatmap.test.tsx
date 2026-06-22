@@ -80,4 +80,11 @@ describe('Heatmap', () => {
     const cells = container.querySelectorAll('[data-testid="heatmap-cell"]');
     expect(cells.length).toBe(28);
   });
+
+  it('aria-label reflects the weeks prop', () => {
+    render(<Heatmap checkIns={[]} weeks={4} />);
+    expect(
+      screen.getByRole('grid', { name: '过去 4 周打卡情况' }),
+    ).toBeInTheDocument();
+  });
 });

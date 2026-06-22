@@ -82,18 +82,19 @@ function buildCells(
 export function Heatmap({
   checkIns,
   weeks = DEFAULT_WEEKS,
-  restDays = DEFAULT_REST_DAYS,
+  restDays,
 }: HeatmapProps): JSX.Element {
+  const effectiveRestDays = restDays ?? DEFAULT_REST_DAYS;
   const cells = useMemo(
-    () => buildCells(checkIns, weeks, restDays),
-    [checkIns, weeks, restDays],
+    () => buildCells(checkIns, weeks, effectiveRestDays),
+    [checkIns, weeks, effectiveRestDays],
   );
 
   return (
     <div
       className={styles.heatmap}
       role="grid"
-      aria-label="过去 12 周打卡情况"
+      aria-label={`过去 ${weeks} 周打卡情况`}
       data-testid="heatmap"
     >
       {cells.map((col, ci) => (
