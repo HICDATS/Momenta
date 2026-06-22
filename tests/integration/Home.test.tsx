@@ -68,8 +68,10 @@ describe('Home 首页 Dashboard', () => {
     ]);
     renderHome();
     await waitFor(() =>
-      expect(screen.getByText('连续打卡 2 天')).toBeInTheDocument(),
+      expect(screen.getByText('连续')).toBeInTheDocument(),
     );
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('2')).toBeInTheDocument();
   });
 
   it('渲染 StatsCard（显示本周/本月/累计统计标签）', async () => {
@@ -119,17 +121,20 @@ describe('Home 首页 Dashboard', () => {
     ]);
     renderHome();
     await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
+      expect(screen.getByText('连续')).toBeInTheDocument(),
     );
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('1')).toBeInTheDocument();
     const firstSport = DEFAULT_SPORT_TYPES[0];
     fireEvent.click(screen.getByRole('button', { name: firstSport.name }));
     fireEvent.click(screen.getByRole('button', { name: '确认' }));
     await waitFor(() =>
       expect(screen.getByText('打卡成功！')).toBeInTheDocument(),
     );
-    await waitFor(() =>
-      expect(screen.getByText('连续打卡 2 天')).toBeInTheDocument(),
-    );
+    await waitFor(() => {
+      const updatedContainer = screen.getByText('连续').parentElement as HTMLElement;
+      expect(within(updatedContainer).getByText('2')).toBeInTheDocument();
+    });
     await waitFor(() =>
       expect(screen.getByTestId('recent-list')).toBeInTheDocument(),
     );

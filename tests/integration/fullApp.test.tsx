@@ -93,8 +93,10 @@ describe('全应用页面切换集成测试', () => {
     ]);
     renderApp('/');
     await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
+      expect(screen.getByText('连续')).toBeInTheDocument(),
     );
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('1')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '历史' }));
     await waitFor(() =>
       expect(screen.getByTestId('page-history')).toBeInTheDocument(),
@@ -127,8 +129,10 @@ describe('全应用页面切换集成测试', () => {
     ]);
     renderApp('/');
     await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
+      expect(screen.getByText('连续')).toBeInTheDocument(),
     );
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('1')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '统计' }));
     await waitFor(() =>
       expect(screen.getByTestId('page-statistics')).toBeInTheDocument(),
@@ -157,8 +161,10 @@ describe('全应用页面切换集成测试', () => {
     ]);
     renderApp('/');
     await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
+      expect(screen.getByText('连续')).toBeInTheDocument(),
     );
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('1')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '历史' }));
     await waitFor(() =>
       expect(screen.getByTestId('group-今天')).toBeInTheDocument(),
@@ -178,8 +184,8 @@ describe('全应用页面切换集成测试', () => {
       within(screen.getByTestId('group-今天')).getByText('跑步'),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '首页' }));
-    await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText('连续')).toBeInTheDocument());
+    const streakContainerAfter = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainerAfter).getByText('1')).toBeInTheDocument();
   });
 });

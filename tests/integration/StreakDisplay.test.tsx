@@ -38,43 +38,16 @@ describe('StreakDisplay 组件', () => {
     expect(screen.getByText('3')).toBeInTheDocument();
   });
 
-  it('Streak > 0 且进行中时火焰图标燃烧（active 类）', () => {
+  it('显示"连续"标签和大数字（衬线大字布局）', () => {
     vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
-    const checkIns = [
-      makeCheckIn(ts(2026, 5, 17)),
-      makeCheckIn(ts(2026, 5, 16)),
-    ];
-    const { container } = render(<StreakDisplay checkIns={checkIns} />);
-    expect(container.querySelector('svg.flameActive')).toBeInTheDocument();
-    expect(container.querySelector('svg.flameInactive')).not.toBeInTheDocument();
-  });
-
-  it('Streak = 0 时火焰图标熄灭/灰色（inactive 类）', () => {
-    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
-    const { container } = render(<StreakDisplay checkIns={[]} />);
-    expect(container.querySelector('svg.flameInactive')).toBeInTheDocument();
-    expect(container.querySelector('svg.flameActive')).not.toBeInTheDocument();
-  });
-
-  it('Streak 中断（有历史但未打卡）时火焰图标熄灭', () => {
-    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
-    const checkIns = [makeCheckIn(ts(2026, 5, 10))];
-    const { container } = render(<StreakDisplay checkIns={checkIns} />);
-    expect(container.querySelector('svg.flameInactive')).toBeInTheDocument();
-    expect(container.querySelector('svg.flameActive')).not.toBeInTheDocument();
-  });
-
-  it('显示"连续打卡 X 天"文案', () => {
-    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
-    const checkIns = [
-      makeCheckIn(ts(2026, 5, 17)),
-      makeCheckIn(ts(2026, 5, 16)),
-    ];
+    const checkIns = [makeCheckIn(ts(2026, 5, 17))];
     render(<StreakDisplay checkIns={checkIns} />);
-    expect(screen.getByText('连续打卡 2 天')).toBeInTheDocument();
+    expect(screen.getByText('连续')).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
+    expect(screen.getByText('天')).toBeInTheDocument();
   });
 
-  it('显示历史最高 Streak', () => {
+  it('显示历史最高 Streak（"· 最高 X 天"）', () => {
     vi.setSystemTime(new Date(2026, 5, 25, 14, 0));
     const checkIns: CheckIn[] = [];
     for (let d = 10; d <= 14; d++) {
@@ -82,7 +55,7 @@ describe('StreakDisplay 组件', () => {
     }
     checkIns.push(makeCheckIn(ts(2026, 5, 25)));
     render(<StreakDisplay checkIns={checkIns} />);
-    expect(screen.getByText(/历史最高.*5.*天/)).toBeInTheDocument();
+    expect(screen.getByText(/最高 5 天/)).toBeInTheDocument();
   });
 
   it('Streak 进行中显示"进行中"状态', () => {
@@ -99,23 +72,51 @@ describe('StreakDisplay 组件', () => {
     expect(screen.getByText('已中断')).toBeInTheDocument();
   });
 
-  it('无记录时显示鼓励文案"开始你的第一次打卡吧！"', () => {
+  it('Streak 中断时显示"已中断 · 等你回来"副标', () => {
+    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
+    const checkIns = [makeCheckIn(ts(2026, 5, 10))];
+    render(<StreakDisplay checkIns={checkIns} />);
+    expect(screen.getByText(/已中断.*等你回来/)).toBeInTheDocument();
+  });
+
+  it('今日打卡后显示"已完成今日训练 · HH:MM"副标', () => {
+    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
+    const checkIns = [makeCheckIn(ts(2026, 5, 17, 9, 0))];
+    render(<StreakDisplay checkIns={checkIns} />);
+    expect(screen.getByText(/已完成今日训练.*09:00/)).toBeInTheDocument();
+  });
+
+  it('无记录时显示鼓励文案"开始你的第一次打卡吧"', () => {
     vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
     render(<StreakDisplay checkIns={[]} />);
-    expect(screen.getByText('开始你的第一次打卡吧！')).toBeInTheDocument();
+    expect(screen.getByText('开始你的第一次打卡吧')).toBeInTheDocument();
+  });
+
+  it('无记录时 statusRow 不渲染（无 statusDot）', () => {
+    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
+    const { container } = render(<StreakDisplay checkIns={[]} />);
+    expect(container.querySelector('[aria-hidden="true"]')).not.toBeInTheDocument();
+  });
+
+  it('有记录时渲染 6×6 ember-500 statusDot', () => {
+    vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
+    const checkIns = [makeCheckIn(ts(2026, 5, 17))];
+    const { container } = render(<StreakDisplay checkIns={checkIns} />);
+    const dot = container.querySelector('[aria-hidden="true"]');
+    expect(dot).toBeInTheDocument();
   });
 
   it('数据实时更新（传入新 checkIns 后刷新）', () => {
     vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
     const { rerender } = render(<StreakDisplay checkIns={[]} />);
-    expect(screen.getByText('开始你的第一次打卡吧！')).toBeInTheDocument();
+    expect(screen.getByText('开始你的第一次打卡吧')).toBeInTheDocument();
     rerender(
       <StreakDisplay
         checkIns={[makeCheckIn(ts(2026, 5, 17)), makeCheckIn(ts(2026, 5, 16))]}
       />,
     );
     expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByText('连续打卡 2 天')).toBeInTheDocument();
+    expect(screen.getByText('进行中')).toBeInTheDocument();
   });
 });
 

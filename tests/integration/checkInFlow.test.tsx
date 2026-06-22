@@ -83,7 +83,7 @@ describe('完整打卡流程集成测试', () => {
   it('选择运动→确认→Toast→Streak+统计更新→历史出现记录→首次成就解锁', async () => {
     renderApp('/');
     await waitFor(() =>
-      expect(screen.getByText('开始你的第一次打卡吧！')).toBeInTheDocument(),
+      expect(screen.getByText('开始你的第一次打卡吧')).toBeInTheDocument(),
     );
     const sport = DEFAULT_SPORT_TYPES[0];
     fireEvent.click(screen.getByRole('button', { name: sport.name }));
@@ -91,9 +91,9 @@ describe('完整打卡流程集成测试', () => {
     await waitFor(() =>
       expect(screen.getByText('打卡成功！')).toBeInTheDocument(),
     );
-    await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText('连续')).toBeInTheDocument());
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('1')).toBeInTheDocument();
     assertStat('累计', '1');
     fireEvent.click(screen.getByRole('link', { name: '历史' }));
     await waitFor(() =>
@@ -118,9 +118,9 @@ describe('完整打卡流程集成测试', () => {
       { sportType: 'yoga', timestamp: ts(2026, 5, 16) },
     ]);
     renderApp('/');
-    await waitFor(() =>
-      expect(screen.getByText('连续打卡 2 天')).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText('连续')).toBeInTheDocument());
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('2')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '历史' }));
     await waitFor(() =>
       expect(screen.getByTestId('page-history')).toBeInTheDocument(),
@@ -135,9 +135,9 @@ describe('完整打卡流程集成测试', () => {
       expect(screen.getByTestId('records-count')).toHaveTextContent(/1/),
     );
     fireEvent.click(screen.getByRole('link', { name: '首页' }));
-    await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText('连续')).toBeInTheDocument());
+    const updatedContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(updatedContainer).getByText('1')).toBeInTheDocument();
     assertStat('累计', '1');
   });
 
@@ -148,9 +148,9 @@ describe('完整打卡流程集成测试', () => {
       { sportType: 'running', timestamp: ts(2026, 5, 15) },
     ]);
     renderApp('/');
-    await waitFor(() =>
-      expect(screen.getByText('连续打卡 3 天')).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText('连续')).toBeInTheDocument());
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('3')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '成就' }));
     await waitFor(() =>
       expect(screen.getByText('三日燃')).toBeInTheDocument(),
@@ -165,9 +165,9 @@ describe('完整打卡流程集成测试', () => {
       { sportType: 'fitness', timestamp: ts(2026, 5, 17, 18) },
     ]);
     renderApp('/');
-    await waitFor(() =>
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText('连续')).toBeInTheDocument());
+    const streakContainer = screen.getByText('连续').parentElement as HTMLElement;
+    expect(within(streakContainer).getByText('1')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('link', { name: '成就' }));
     await waitFor(() =>
       expect(screen.getByText('已解锁 1/7')).toBeInTheDocument(),
@@ -177,7 +177,7 @@ describe('完整打卡流程集成测试', () => {
   it('打卡后首页数据即时更新（Streak+统计+最近记录同步刷新）', async () => {
     renderApp('/');
     await waitFor(() =>
-      expect(screen.getByText('开始你的第一次打卡吧！')).toBeInTheDocument(),
+      expect(screen.getByText('开始你的第一次打卡吧')).toBeInTheDocument(),
     );
     const sport = DEFAULT_SPORT_TYPES[0];
     fireEvent.click(screen.getByRole('button', { name: sport.name }));
@@ -186,7 +186,9 @@ describe('完整打卡流程集成测试', () => {
       expect(screen.getByText('打卡成功！')).toBeInTheDocument(),
     );
     await waitFor(() => {
-      expect(screen.getByText('连续打卡 1 天')).toBeInTheDocument();
+      expect(screen.getByText('连续')).toBeInTheDocument();
+      const c = screen.getByText('连续').parentElement as HTMLElement;
+      expect(within(c).getByText('1')).toBeInTheDocument();
       assertStat('累计', '1');
       const list = screen.getByTestId('recent-list');
       expect(within(list).getByText(sport.name)).toBeInTheDocument();
