@@ -252,6 +252,94 @@ describe('Settings 设置页', () => {
     expect(screen.getByText('新提醒')).toBeInTheDocument();
   });
 
+  it('提醒设置区：编辑提醒可修改时间（小时）', () => {
+    seedReminders([
+      makeReminder({ id: 'r1', message: '去跑步', hour: 19, minute: 0 }),
+    ]);
+    render(<Settings />);
+    fireEvent.click(screen.getByRole('button', { name: '编辑' }));
+    const hourInput = screen.getByLabelText('小时') as HTMLInputElement;
+    fireEvent.change(hourInput, { target: { value: '8' } });
+    fireEvent.click(screen.getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(REMINDERS_KEY) as string);
+    expect(stored[0].hour).toBe(8);
+  });
+
+  it('提醒设置区：编辑提醒可修改时间（分钟）', () => {
+    seedReminders([
+      makeReminder({ id: 'r1', message: '去跑步', hour: 19, minute: 0 }),
+    ]);
+    render(<Settings />);
+    fireEvent.click(screen.getByRole('button', { name: '编辑' }));
+    const minuteInput = screen.getByLabelText('分钟') as HTMLInputElement;
+    fireEvent.change(minuteInput, { target: { value: '45' } });
+    fireEvent.click(screen.getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(REMINDERS_KEY) as string);
+    expect(stored[0].minute).toBe(45);
+  });
+
+  it('提醒设置区：编辑提醒可修改重复日', () => {
+    seedReminders([
+      makeReminder({ id: 'r1', message: '去跑步', days: [1, 3, 5] }),
+    ]);
+    render(<Settings />);
+    fireEvent.click(screen.getByRole('button', { name: '编辑' }));
+    const monday = screen.getByLabelText('周一') as HTMLInputElement;
+    expect(monday.checked).toBe(true);
+    fireEvent.click(monday);
+    expect(monday.checked).toBe(false);
+    fireEvent.click(screen.getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(REMINDERS_KEY) as string);
+    expect(stored[0].days).toEqual([3, 5]);
+  });
+
+  it('提醒设置区：编辑提醒可修改 skipIfCheckedIn 开关', () => {
+    seedReminders([
+      makeReminder({ id: 'r1', message: '去跑步', skipIfCheckedIn: true }),
+    ]);
+    render(<Settings />);
+    fireEvent.click(screen.getByRole('button', { name: '编辑' }));
+    const skip = screen.getByLabelText('已打卡则跳过') as HTMLInputElement;
+    expect(skip.checked).toBe(true);
+    fireEvent.click(skip);
+    expect(skip.checked).toBe(false);
+    fireEvent.click(screen.getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(REMINDERS_KEY) as string);
+    expect(stored[0].skipIfCheckedIn).toBe(false);
+  });
+
+  it('提醒设置区：编辑保存后多个字段同时生效', () => {
+    seedReminders([
+      makeReminder({
+        id: 'r1',
+        message: '去跑步',
+        days: [1, 3, 5],
+        hour: 19,
+        minute: 0,
+        skipIfCheckedIn: true,
+      }),
+    ]);
+    render(<Settings />);
+    fireEvent.click(screen.getByRole('button', { name: '编辑' }));
+    const hourInput = screen.getByLabelText('小时') as HTMLInputElement;
+    fireEvent.change(hourInput, { target: { value: '7' } });
+    const minuteInput = screen.getByLabelText('分钟') as HTMLInputElement;
+    fireEvent.change(minuteInput, { target: { value: '30' } });
+    const messageInput = screen.getByLabelText('编辑提醒文案') as HTMLInputElement;
+    fireEvent.change(messageInput, { target: { value: '晨练' } });
+    const sunday = screen.getByLabelText('周日') as HTMLInputElement;
+    fireEvent.click(sunday);
+    fireEvent.click(screen.getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(REMINDERS_KEY) as string);
+    expect(stored[0]).toMatchObject({
+      hour: 7,
+      minute: 30,
+      message: '晨练',
+      skipIfCheckedIn: true,
+    });
+    expect(stored[0].days).toEqual([0, 1, 3, 5]);
+  });
+
   it('智能提醒区：点击开关切换启用状态', () => {
     seedSmartReminder(false, 2);
     render(<Settings />);

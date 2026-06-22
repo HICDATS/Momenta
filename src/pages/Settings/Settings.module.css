@@ -203,3 +203,111 @@
   color: var(--color-text);
   background-color: var(--color-bg-white);
 }
+
+.editFormExpanded {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-md) 0;
+}
+
+.editField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.editLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timeRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.timeInput {
+  width: 56px;
+  min-height: 44px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-text-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  color: var(--color-text);
+  background-color: var(--color-bg-white);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.timeSeparator {
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+}
+
+.dayChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.dayChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 32px;
+  padding: 0 var(--spacing-sm);
+  border: 1px solid var(--color-text-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-white);
+  cursor: pointer;
+  user-select: none;
+}
+
+.dayChipActive {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-bg-white);
+}
+
+.dayChipInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.skipRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-height: 44px;
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.skipCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+}
+
+.editActions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+}
