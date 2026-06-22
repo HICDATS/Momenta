@@ -48,10 +48,10 @@ Momenta - 运动打卡程序
 - [x] 4.0 阶段完成
 
 ### 阶段5：实现与迭代 (Build)
-- [ ] 5.1 创建工作区隔离（using-git-worktrees）
-- [ ] 5.2 创建任务链（TASKCHAIN.md）
-- [ ] 5.3 用户确认 TASKCHAIN.md ← **必须用户确认后才能开始执行任务**
-- [ ] 5.4 初始化项目框架（T01）
+- [x] 5.1 创建工作区隔离（using-git-worktrees）← ✅ 2026-06-21 .worktrees/develop
+- [x] 5.2 创建任务链（TASKCHAIN.md）← ✅ 2026-06-21 20个任务
+- [x] 5.3 用户确认 TASKCHAIN.md ← ✅ 2026-06-21 用户确认通过
+- [ ] 5.4 初始化项目框架（T01）← **当前任务**
 - [ ] 5.5 逐步实现核心功能（详见 TASKCHAIN.md，使用subagent-driven-development）
 - [ ] 5.6 优化实现细节
 - [ ] 5.7 完成开发收尾（finishing-a-development-branch）
@@ -65,6 +65,7 @@ Momenta - 运动打卡程序
 | 2026-06-21 | 阶段2 | PRD.md | ✅通过 | - |
 | 2026-06-21 | 阶段3 | TECH_DESIGN.md | ✅通过 | 选择方案B：React + Vite |
 | 2026-06-21 | 阶段4 | AGENTS.md | ✅通过 | - |
+| 2026-06-21 | 阶段5 | TASKCHAIN.md | ✅通过 | - |
 
 ## 关键决策记录
 | 日期 | 决策 | 理由 |
