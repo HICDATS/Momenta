@@ -4,6 +4,7 @@ import {
   calculateStreak,
   calculateMaxStreak,
   isStreakActive,
+  calculateStreakAt,
 } from '../../src/utils/streakCalculator';
 
 function ts(year: number, month: number, day: number, hour = 12): number {
@@ -284,5 +285,37 @@ describe('isStreakActive', () => {
     vi.setSystemTime(new Date(2026, 5, 22, 14, 0));
     const checkIns = [makeCheckIn(ts(2026, 5, 19))];
     expect(isStreakActive(checkIns, [0, 6])).toBe(true);
+  });
+});
+
+describe('calculateStreakAt', () => {
+  it('returns 0 when no checkIns on or before the date', () => {
+    expect(calculateStreakAt([], Date.now(), [])).toBe(0);
+  });
+
+  it('returns 1 when only the target date has a checkIn', () => {
+    const t = new Date('2026-06-22T10:00:00').getTime();
+    const cis: CheckIn[] = [{ id: '1', sportType: 'x', timestamp: t, createdAt: t }];
+    expect(calculateStreakAt(cis, t, [])).toBe(1);
+  });
+
+  it('returns 4 when target and previous 3 days all checked in', () => {
+    const t = new Date('2026-06-22T10:00:00').getTime();
+    const cis: CheckIn[] = [0, 1, 2, 3].map((i) => ({
+      id: String(i),
+      sportType: 'x',
+      timestamp: t - i * 86_400_000,
+      createdAt: t,
+    }));
+    expect(calculateStreakAt(cis, t, [])).toBe(4);
+  });
+
+  it('skips rest days in the streak count', () => {
+    const sunday = new Date('2026-06-21T10:00:00').getTime();
+    const monday = new Date('2026-06-22T10:00:00').getTime();
+    const cis: CheckIn[] = [monday, sunday - 86_400_000 * 4, sunday - 86_400_000 * 5].map(
+      (ts, i) => ({ id: String(i), sportType: 'x', timestamp: ts, createdAt: ts }),
+    );
+    expect(calculateStreakAt(cis, monday, [0, 6])).toBe(1);
   });
 });

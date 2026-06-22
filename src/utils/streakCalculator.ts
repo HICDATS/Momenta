@@ -131,3 +131,36 @@ export function isStreakActive(checkIns: CheckIn[], restDays: number[]): boolean
 
   return false;
 }
+
+export function calculateStreakAt(
+  checkIns: CheckIn[],
+  atTimestamp: number,
+  restDays: number[],
+): number {
+  if (checkIns.length === 0) return 0;
+  const target = new Date(atTimestamp);
+  target.setHours(0, 0, 0, 0);
+  const targetTime = target.getTime();
+
+  const dayKeys = new Set(checkIns.map((c) => getDayKey(c.timestamp)));
+  let count = 0;
+  let cursor = targetTime;
+
+  if (dayKeys.has(getDayKey(cursor))) {
+    count++;
+  }
+
+  while (true) {
+    cursor -= 86_400_000;
+    const dayKey = getDayKey(cursor);
+    const dow = new Date(cursor).getDay();
+    if (restDays.includes(dow)) continue;
+    if (dayKeys.has(dayKey)) {
+      count++;
+    } else {
+      break;
+    }
+  }
+
+  return count;
+}
