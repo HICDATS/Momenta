@@ -1,4 +1,4 @@
-/* 基础重置 */
+/* === 基础重置 === */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -8,27 +8,26 @@
 html {
   -webkit-text-size-adjust: 100%;
   font-size: 16px;
+  font-family: var(--font-body);
 }
 
 body {
-  font-family: var(--font-family);
+  font-family: var(--font-body);
   font-size: var(--font-size-md);
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  color: var(--ink-900);
+  background-color: var(--paper-50);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'tnum' 0;
 }
 
-/* 触摸目标最小44x44px */
 button, a, input, select, textarea {
   min-height: 44px;
+  font-family: inherit;
 }
 
-/* 移除默认样式 */
-ul, ol {
-  list-style: none;
-}
+ul, ol { list-style: none; }
 
 a {
   color: inherit;
@@ -41,17 +40,30 @@ button {
   background: none;
   font: inherit;
   color: inherit;
+  padding: 0;
 }
 
-img {
-  max-width: 100%;
-  display: block;
-}
+img { max-width: 100%; display: block; }
 
-/* 应用容器 */
 #root {
   min-height: 100vh;
   max-width: var(--max-width);
   margin: 0 auto;
-  background-color: var(--color-bg-white);
+  background-color: var(--paper-50);
+}
+
+/* === 焦点环 === */
+:focus-visible {
+  outline: 1px solid var(--ember-500);
+  outline-offset: 2px;
+}
+
+/* === 减少动效 === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
