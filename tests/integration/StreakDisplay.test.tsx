@@ -160,7 +160,7 @@ describe('StatsCard 组件', () => {
     expect(within(totalCard).getByText('4')).toBeInTheDocument();
   });
 
-  it('无记录时所有统计为 0 并显示鼓励文案', () => {
+  it('无记录时所有统计为 0 且不显示空状态文案', () => {
     vi.setSystemTime(new Date(2026, 5, 17, 14, 0));
     render(<StatsCard checkIns={[]} />);
     const weekCard = screen.getByText('本周').closest('div') as HTMLElement;
@@ -169,7 +169,7 @@ describe('StatsCard 组件', () => {
     expect(within(weekCard).getByText('0')).toBeInTheDocument();
     expect(within(monthCard).getByText('0')).toBeInTheDocument();
     expect(within(totalCard).getByText('0')).toBeInTheDocument();
-    expect(screen.getByText('动起来吧！')).toBeInTheDocument();
+    expect(screen.queryByText('动起来吧！')).not.toBeInTheDocument();
   });
 
   it('数据正确性：跨周/跨月记录只计入对应周期', () => {

@@ -12,12 +12,9 @@ const STAT_ITEMS = [
   { key: 'totalCount', label: '累计' },
 ] as const;
 
-const EMPTY_ENCOURAGE = '动起来吧！';
-
 export function StatsCard({ checkIns }: StatsCardProps): JSX.Element {
   const { weekCount, monthCount, totalCount } = useStats(checkIns);
   const counts = { weekCount, monthCount, totalCount };
-  const isEmpty = totalCount === 0;
 
   return (
     <div className={styles.container}>
@@ -29,7 +26,6 @@ export function StatsCard({ checkIns }: StatsCardProps): JSX.Element {
           </div>
         ))}
       </div>
-      {isEmpty && <div className={styles.emptyText}>{EMPTY_ENCOURAGE}</div>}
     </div>
   );
 }
