@@ -387,6 +387,49 @@ describe('Settings 设置页', () => {
     expect(screen.getAllByTestId('goal-progress')).toHaveLength(1);
   });
 
+  it('目标设置区：编辑目标可修改次数', () => {
+    seedGoals([makeGoal({ id: 'g1', targetCount: 3, period: 'weekly' })]);
+    render(<Settings />);
+    const section = getSection('目标设置');
+    const editButtons = within(section).getAllByRole('button', { name: '编辑' });
+    fireEvent.click(editButtons[0]);
+    const countInput = screen.getByLabelText('目标次数') as HTMLInputElement;
+    expect(countInput.value).toBe('3');
+    fireEvent.change(countInput, { target: { value: '7' } });
+    fireEvent.click(within(section).getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(GOALS_KEY) as string);
+    expect(stored[0].targetCount).toBe(7);
+  });
+
+  it('目标设置区：编辑目标可修改周期', () => {
+    seedGoals([makeGoal({ id: 'g1', targetCount: 3, period: 'weekly' })]);
+    render(<Settings />);
+    const section = getSection('目标设置');
+    const editButtons = within(section).getAllByRole('button', { name: '编辑' });
+    fireEvent.click(editButtons[0]);
+    const periodSelect = screen.getByLabelText('周期') as HTMLSelectElement;
+    expect(periodSelect.value).toBe('weekly');
+    fireEvent.change(periodSelect, { target: { value: 'monthly' } });
+    fireEvent.click(within(section).getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(GOALS_KEY) as string);
+    expect(stored[0].period).toBe('monthly');
+  });
+
+  it('目标设置区：编辑目标可同时修改次数和周期', () => {
+    seedGoals([makeGoal({ id: 'g1', targetCount: 3, period: 'weekly' })]);
+    render(<Settings />);
+    const section = getSection('目标设置');
+    const editButtons = within(section).getAllByRole('button', { name: '编辑' });
+    fireEvent.click(editButtons[0]);
+    const countInput = screen.getByLabelText('目标次数') as HTMLInputElement;
+    fireEvent.change(countInput, { target: { value: '10' } });
+    const periodSelect = screen.getByLabelText('周期') as HTMLSelectElement;
+    fireEvent.change(periodSelect, { target: { value: 'monthly' } });
+    fireEvent.click(within(section).getByRole('button', { name: '保存' }));
+    const stored = JSON.parse(localStorage.getItem(GOALS_KEY) as string);
+    expect(stored[0]).toMatchObject({ targetCount: 10, period: 'monthly' });
+  });
+
   it('自定义运动类型区：显示自定义类型列表', () => {
     seedCustomSports([
       makeCustomSport({ id: 'c1', name: '攀岩' }),

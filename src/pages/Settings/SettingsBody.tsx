@@ -7,6 +7,7 @@ import { Button } from '../../components/common/Button/Button';
 import { GoalProgress } from '../../components/GoalProgress/GoalProgress';
 import { SportTypeEditor } from '../../components/SportTypeEditor/SportTypeEditor';
 import { RemindersSection } from './RemindersSection';
+import type { Goal } from '../../types';
 import styles from './Settings.module.css';
 
 const APP_VERSION = '0.1.0';
@@ -14,6 +15,8 @@ const PRIVACY_TEXT = '数据完全本地存储，不上传任何服务器';
 const MIN_THRESHOLD = 1;
 const MAX_THRESHOLD = 30;
 const DEFAULT_NEW_GOAL_COUNT = 3;
+const MIN_GOAL_COUNT = 1;
+const MAX_GOAL_COUNT = 999;
 
 interface SettingsBodyProps {
   onClearData: () => void;
@@ -22,9 +25,30 @@ interface SettingsBodyProps {
 export function SettingsBody({ onClearData }: SettingsBodyProps): JSX.Element {
   const { enabled, threshold, setEnabled, setThreshold } = useSmartReminder();
   const { checkIns } = useCheckIns();
-  const { goalsWithProgress, addGoal, deleteGoal } = useGoals(checkIns);
+  const { goalsWithProgress, addGoal, updateGoal, deleteGoal } = useGoals(checkIns);
   const { customSportTypes, deleteSportType } = useSportTypes();
   const [editorOpen, setEditorOpen] = useState(false);
+  const [editingGoalId, setEditingGoalId] = useState<string | null>(null);
+  const [editTargetCount, setEditTargetCount] = useState('');
+  const [editPeriod, setEditPeriod] = useState<Goal['period']>('weekly');
+
+  const handleStartEditGoal = useCallback((goal: Goal): void => {
+    setEditingGoalId(goal.id);
+    setEditTargetCount(String(goal.targetCount));
+    setEditPeriod(goal.period);
+  }, []);
+
+  const handleCancelEditGoal = useCallback((): void => {
+    setEditingGoalId(null);
+  }, []);
+
+  const handleSaveEditGoal = useCallback((): void => {
+    if (editingGoalId === null) return;
+    const count = Number.parseInt(editTargetCount, 10);
+    if (Number.isNaN(count) || count < MIN_GOAL_COUNT || count > MAX_GOAL_COUNT) return;
+    updateGoal(editingGoalId, { targetCount: count, period: editPeriod });
+    setEditingGoalId(null);
+  }, [editingGoalId, editTargetCount, editPeriod, updateGoal]);
 
   const handleExport = useCallback((): void => {
     const data = {
@@ -100,10 +124,68 @@ export function SettingsBody({ onClearData }: SettingsBodyProps): JSX.Element {
         <ul className={styles.list}>
           {goalsWithProgress.map((g) => (
             <li key={g.goal.id} className={styles.goalItem}>
-              <GoalProgress goalWithProgress={g} />
-              <Button variant="secondary" size="sm" onClick={() => deleteGoal(g.goal.id)}>
-                删除
-              </Button>
+              {editingGoalId === g.goal.id ? (
+                <div className={styles.goalEditForm}>
+                  <div className={styles.editField}>
+                    <label className={styles.editLabel} htmlFor={`goal-count-${g.goal.id}`}>
+                      目标次数
+                    </label>
+                    <input
+                      id={`goal-count-${g.goal.id}`}
+                      type="number"
+                      min={MIN_GOAL_COUNT}
+                      max={MAX_GOAL_COUNT}
+                      value={editTargetCount}
+                      onChange={(e) => setEditTargetCount(e.target.value)}
+                      className={styles.numberInput}
+                      aria-label="目标次数"
+                    />
+                  </div>
+                  <div className={styles.editField}>
+                    <label className={styles.editLabel} htmlFor={`goal-period-${g.goal.id}`}>
+                      周期
+                    </label>
+                    <select
+                      id={`goal-period-${g.goal.id}`}
+                      value={editPeriod}
+                      onChange={(e) => setEditPeriod(e.target.value as Goal['period'])}
+                      className={styles.goalSelect}
+                      aria-label="周期"
+                    >
+                      <option value="weekly">每周</option>
+                      <option value="monthly">每月</option>
+                    </select>
+                  </div>
+                  <div className={styles.editActions}>
+                    <Button variant="primary" size="sm" onClick={handleSaveEditGoal}>
+                      保存
+                    </Button>
+                    <Button variant="secondary" size="sm" onClick={handleCancelEditGoal}>
+                      取消
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <GoalProgress goalWithProgress={g} />
+                  <div className={styles.goalActions}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => handleStartEditGoal(g.goal)}
+                    >
+                      编辑
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => deleteGoal(g.goal.id)}
+                    >
+                      删除
+                    </Button>
+                  </div>
+                </>
+              )}
             </li>
           ))}
         </ul>

@@ -165,6 +165,33 @@
   border-bottom: 1px solid var(--color-bg);
 }
 
+.goalActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.goalEditForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+  width: 100%;
+}
+
+.goalSelect {
+  min-height: 44px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-text-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  color: var(--color-text);
+  background-color: var(--color-bg-white);
+  box-sizing: border-box;
+}
+
 .sportName {
   font-size: var(--font-size-md);
   color: var(--color-text);
