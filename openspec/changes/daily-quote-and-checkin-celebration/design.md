@@ -125,7 +125,7 @@ setCelebrationOpen(true);
 
 ### 7. 样式：DailyQuote 使用 CSS Variables，复用品牌色 `--color-primary` (`#FF6B6B`)
 
-**选择**: DailyQuote 卡片背景使用 `var(--color-surface)`（浅灰），左侧装饰条使用 `var(--color-primary)`。
+**选择**: DailyQuote 卡片背景使用 `var(--color-bg-card)`，左侧装饰条使用 `var(--color-primary)`。
 
 **理由**:
 - 遵循 AGENTS.md 「所有间距、颜色使用 CSS Variables，禁止硬编码」

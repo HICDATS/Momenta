@@ -7,7 +7,7 @@
 ## 2. DailyQuote 组件
 
 - [x] 2.1 创建 `src/components/DailyQuote/DailyQuote.tsx`：函数式组件，接收 `quote: string` prop，渲染带左侧色条的卡片
-- [x] 2.2 创建 `src/components/DailyQuote/DailyQuote.module.css`：使用 CSS Variables（`--color-primary`、`--color-surface`），移动端优先样式
+- [x] 2.2 创建 `src/components/DailyQuote/DailyQuote.module.css`：使用 CSS Variables（`--color-primary`、`--color-bg-card`），移动端优先样式
 - [x] 2.3 编写 `tests/unit/DailyQuote.test.tsx`：覆盖渲染引号文本、aria-label、空字符串兜底
 
 ## 3. CheckInCelebration 组件

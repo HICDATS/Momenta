@@ -20,12 +20,18 @@ function getCryptoRandomInt(max: number): number {
 }
 
 export function getDailyQuote(dateStr?: string): string {
+  if (DAILY_QUOTES.length === 0) {
+    throw new Error('DAILY_QUOTES is empty');
+  }
   const date = dateStr ?? format(new Date(), 'yyyy-MM-dd');
   const idx = Math.abs(hashString(date)) % DAILY_QUOTES.length;
   return DAILY_QUOTES[idx];
 }
 
 export function getRandomEncouragement(): string {
+  if (ENCOURAGEMENTS.length === 0) {
+    throw new Error('ENCOURAGEMENTS is empty');
+  }
   const idx = getCryptoRandomInt(ENCOURAGEMENTS.length);
   return ENCOURAGEMENTS[idx];
 }

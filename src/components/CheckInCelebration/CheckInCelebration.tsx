@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Modal } from '../common/Modal/Modal';
 import styles from './CheckInCelebration.module.css';
 
@@ -16,15 +16,18 @@ export function CheckInCelebration({
   encouragement,
   onClose,
 }: CheckInCelebrationProps): JSX.Element {
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
     if (!open) return;
     const timer = setTimeout(() => {
-      onClose();
+      onCloseRef.current();
     }, AUTO_CLOSE_MS);
     return () => {
       clearTimeout(timer);
     };
-  }, [open, onClose]);
+  }, [open]);
 
   return (
     <Modal open={open} onClose={onClose}>

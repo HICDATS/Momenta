@@ -65,3 +65,33 @@ describe('getRandomEncouragement', () => {
     }
   });
 });
+
+describe('边界：空池', () => {
+  it('getDailyQuote 在 DAILY_QUOTES 为空时抛错', async () => {
+    vi.resetModules();
+    vi.doMock('../../src/constants/quotes', () => ({
+      DAILY_QUOTES: [],
+      ENCOURAGEMENTS: ['x'],
+    }));
+    const { getDailyQuote: getDailyQuoteEmpty } = await import(
+      '../../src/utils/quoteSelector'
+    );
+    expect(() => getDailyQuoteEmpty('2026-06-23')).toThrow('DAILY_QUOTES is empty');
+    vi.doUnmock('../../src/constants/quotes');
+    vi.resetModules();
+  });
+
+  it('getRandomEncouragement 在 ENCOURAGEMENTS 为空时抛错', async () => {
+    vi.resetModules();
+    vi.doMock('../../src/constants/quotes', () => ({
+      DAILY_QUOTES: ['x'],
+      ENCOURAGEMENTS: [],
+    }));
+    const { getRandomEncouragement: getRandomEncouragementEmpty } = await import(
+      '../../src/utils/quoteSelector'
+    );
+    expect(() => getRandomEncouragementEmpty()).toThrow('ENCOURAGEMENTS is empty');
+    vi.doUnmock('../../src/constants/quotes');
+    vi.resetModules();
+  });
+});
