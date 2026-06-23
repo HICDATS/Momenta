@@ -16,6 +16,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@fission-ai/openspec": "^1.4.1",
     "date-fns": "^4.1.0",
     "dexie": "^4.0.10",
     "lucide-react": "^1.21.0",
