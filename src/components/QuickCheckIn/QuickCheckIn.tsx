@@ -14,9 +14,11 @@ import { DEFAULT_SPORT_TYPES } from '../../constants/sports';
 import { useCheckIns } from '../../hooks/useCheckIns';
 import { formatDateTime } from '../../utils/dateUtils';
 import { validateNote } from '../../utils/validators';
+import { getRandomEncouragement } from '../../utils/quoteSelector';
 import type { CheckIn, SportType } from '../../types';
 import { Modal } from '../common/Modal/Modal';
 import { Toast } from '../common/Toast/Toast';
+import { CheckInCelebration } from '../CheckInCelebration/CheckInCelebration';
 import styles from './QuickCheckIn.module.css';
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -51,6 +53,8 @@ export function QuickCheckIn({
   const [note, setNote] = useState<string>('');
   const [noteError, setNoteError] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastState | null>(null);
+  const [celebrationOpen, setCelebrationOpen] = useState(false);
+  const [encouragement, setEncouragement] = useState('');
 
   const handleToastClose = useCallback((): void => {
     setToast(null);
@@ -84,6 +88,8 @@ export function QuickCheckIn({
       if (created) {
         setToast({ message: SUCCESS_MESSAGE, type: 'success' });
         onCheckInComplete?.(created);
+        setEncouragement(getRandomEncouragement());
+        setCelebrationOpen(true);
         resetForm();
       } else {
         setToast({ message: ERROR_MESSAGE, type: 'error' });
@@ -162,6 +168,12 @@ export function QuickCheckIn({
           onClose={handleToastClose}
         />
       )}
+
+      <CheckInCelebration
+        encouragement={encouragement}
+        open={celebrationOpen}
+        onClose={() => setCelebrationOpen(false)}
+      />
     </div>
   );
 }
