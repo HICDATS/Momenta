@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useCheckIns } from '../../hooks/useCheckIns';
 import { StreakDisplay } from '../../components/StreakDisplay/StreakDisplay';
 import { StatsCard } from '../../components/StatsCard/StatsCard';
 import { Heatmap } from '../../components/Heatmap/Heatmap';
 import { QuickCheckIn } from '../../components/QuickCheckIn/QuickCheckIn';
+import { DailyQuote } from '../../components/DailyQuote/DailyQuote';
 import { formatDateTime } from '../../utils/dateUtils';
+import { getDailyQuote } from '../../utils/quoteSelector';
 import { DEFAULT_SPORT_TYPES } from '../../constants/sports';
 import styles from './Home.module.css';
 
@@ -29,6 +31,7 @@ function formatEyebrow(timestamp: number): string {
 export function Home(): JSX.Element {
   const { checkIns, loading, error, refresh } = useCheckIns();
   const recentCheckIns = checkIns.slice(0, RECENT_PREVIEW_COUNT);
+  const dailyQuote = useMemo(() => getDailyQuote(), []);
   const [showEnergyBar, setShowEnergyBar] = useState(false);
 
   useEffect(() => {
@@ -65,6 +68,8 @@ export function Home(): JSX.Element {
               role="presentation"
             />
           )}
+
+          <DailyQuote quote={dailyQuote} />
 
           <StreakDisplay checkIns={checkIns} />
           <Heatmap checkIns={checkIns} />
