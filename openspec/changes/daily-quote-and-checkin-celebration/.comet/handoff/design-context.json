@@ -1,0 +1,15 @@
+{
+  "change": "daily-quote-and-checkin-celebration",
+  "phase": "design",
+  "mode": "compact",
+  "canonical_spec": "openspec",
+  "generated_by": "comet-handoff.sh",
+  "context_hash": "f0bba2628fee7f1d784c3ca4fa0cc7493f16f87b75052af645c77d159f768c6d",
+  "files": [
+    { "path": "openspec/changes/daily-quote-and-checkin-celebration/proposal.md", "sha256": "5d03d27a80042d22fd9232a12e22e3de8f1bd40138db027b236b97dc24a08769" },
+    { "path": "openspec/changes/daily-quote-and-checkin-celebration/design.md", "sha256": "853c54ba6a2bef80634db5bd8c260312da13e093b0d02e77c889e8fe809c75b4" },
+    { "path": "openspec/changes/daily-quote-and-checkin-celebration/tasks.md", "sha256": "baa5271882a8436d0da04def966276fc63c23000d1cc6bd2285ad2df73f7d2aa" },
+    { "path": "openspec/changes/daily-quote-and-checkin-celebration/specs/checkin-celebration/spec.md", "sha256": "bf8d6eb2dee277ffbf1dc8b349df559fde3fd49d8fd4cbc90b48b5bfc34353bb" },
+    { "path": "openspec/changes/daily-quote-and-checkin-celebration/specs/daily-quote/spec.md", "sha256": "a7adef652d3288a9edce45a119f81dae43117ae5c1f75a94b46a01d392fc4c0f" }
+  ]
+}
