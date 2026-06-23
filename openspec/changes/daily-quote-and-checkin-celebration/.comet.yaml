@@ -1,12 +1,12 @@
 workflow: full
-phase: build
+phase: verify
 context_compression: off
 build_mode: executing-plans
 build_pause: null
 subagent_dispatch: null
 tdd_mode: tdd
 isolation: branch
-verify_mode: null
+verify_mode: full
 auto_transition: true
 base_ref: b472ca090233ce70f60930ce6bee6161f4e22e48
 design_doc: docs/superpowers/specs/2026-06-23-daily-quote-and-checkin-celebration-design.md
