@@ -53,7 +53,7 @@ base-ref: b472ca090233ce70f60930ce6bee6161f4e22e48
 - Create: `src/utils/quoteSelector.ts`
 - Create: `tests/unit/quoteSelector.test.ts`
 
-- [ ] **Step 1.1: 编写失败测试 — quoteSelector**
+- [x] **Step 1.1: 编写失败测试 — quoteSelector**
 
 创建 `tests/unit/quoteSelector.test.ts`：
 
@@ -127,12 +127,12 @@ describe('getRandomEncouragement', () => {
 });
 ```
 
-- [ ] **Step 1.2: 运行测试确认失败**
+- [x] **Step 1.2: 运行测试确认失败**
 
 运行: `npx vitest run tests/unit/quoteSelector.test.ts`
 预期: FAIL — `Cannot find module '../../src/utils/quoteSelector'`
 
-- [ ] **Step 1.3: 创建文案常量 `src/constants/quotes.ts`**
+- [x] **Step 1.3: 创建文案常量 `src/constants/quotes.ts`**
 
 ```ts
 export const DAILY_QUOTES: string[] = [
@@ -166,7 +166,7 @@ export const ENCOURAGEMENTS: string[] = [
 ];
 ```
 
-- [ ] **Step 1.4: 实现选择器 `src/utils/quoteSelector.ts`**
+- [x] **Step 1.4: 实现选择器 `src/utils/quoteSelector.ts`**
 
 ```ts
 import { format } from 'date-fns';
@@ -202,12 +202,12 @@ export function getRandomEncouragement(): string {
 }
 ```
 
-- [ ] **Step 1.5: 运行测试确认通过**
+- [x] **Step 1.5: 运行测试确认通过**
 
 运行: `npx vitest run tests/unit/quoteSelector.test.ts`
 预期: PASS — 全部用例绿
 
-- [ ] **Step 1.6: 提交**
+- [x] **Step 1.6: 提交**
 
 ```bash
 git add src/constants/quotes.ts \
@@ -225,7 +225,7 @@ git commit -m "feat(quotes): 添加每日名言与鼓励语文案池及选择器
 - Create: `src/components/DailyQuote/DailyQuote.module.css`
 - Create: `tests/unit/DailyQuote.test.tsx`
 
-- [ ] **Step 2.1: 编写失败测试 — DailyQuote**
+- [x] **Step 2.1: 编写失败测试 — DailyQuote**
 
 创建 `tests/unit/DailyQuote.test.tsx`：
 
@@ -259,12 +259,12 @@ describe('DailyQuote 组件', () => {
 });
 ```
 
-- [ ] **Step 2.2: 运行测试确认失败**
+- [x] **Step 2.2: 运行测试确认失败**
 
 运行: `npx vitest run tests/unit/DailyQuote.test.tsx`
 预期: FAIL — `Cannot find module '../../src/components/DailyQuote/DailyQuote'`
 
-- [ ] **Step 2.3: 创建样式 `src/components/DailyQuote/DailyQuote.module.css`**
+- [x] **Step 2.3: 创建样式 `src/components/DailyQuote/DailyQuote.module.css`**
 
 ```css
 .card {
@@ -293,7 +293,7 @@ describe('DailyQuote 组件', () => {
 }
 ```
 
-- [ ] **Step 2.4: 实现组件 `src/components/DailyQuote/DailyQuote.tsx`**
+- [x] **Step 2.4: 实现组件 `src/components/DailyQuote/DailyQuote.tsx`**
 
 ```tsx
 import styles from './DailyQuote.module.css';
@@ -319,12 +319,12 @@ export function DailyQuote({ quote }: DailyQuoteProps): JSX.Element {
 }
 ```
 
-- [ ] **Step 2.5: 运行测试确认通过**
+- [x] **Step 2.5: 运行测试确认通过**
 
 运行: `npx vitest run tests/unit/DailyQuote.test.tsx`
 预期: PASS — 全部用例绿
 
-- [ ] **Step 2.6: 提交**
+- [x] **Step 2.6: 提交**
 
 ```bash
 git add src/components/DailyQuote/ tests/unit/DailyQuote.test.tsx
@@ -340,7 +340,7 @@ git commit -m "feat(quotes): 添加 DailyQuote 展示组件"
 - Create: `src/components/CheckInCelebration/CheckInCelebration.module.css`
 - Create: `tests/unit/CheckInCelebration.test.tsx`
 
-- [ ] **Step 3.1: 编写失败测试 — CheckInCelebration**
+- [x] **Step 3.1: 编写失败测试 — CheckInCelebration**
 
 创建 `tests/unit/CheckInCelebration.test.tsx`：
 
@@ -455,12 +455,12 @@ describe('CheckInCelebration 组件', () => {
 });
 ```
 
-- [ ] **Step 3.2: 运行测试确认失败**
+- [x] **Step 3.2: 运行测试确认失败**
 
 运行: `npx vitest run tests/unit/CheckInCelebration.test.tsx`
 预期: FAIL — `Cannot find module '../../src/components/CheckInCelebration/CheckInCelebration'`
 
-- [ ] **Step 3.3: 创建样式 `src/components/CheckInCelebration/CheckInCelebration.module.css`**
+- [x] **Step 3.3: 创建样式 `src/components/CheckInCelebration/CheckInCelebration.module.css`**
 
 ```css
 .container {
@@ -488,7 +488,7 @@ describe('CheckInCelebration 组件', () => {
 }
 ```
 
-- [ ] **Step 3.4: 实现组件 `src/components/CheckInCelebration/CheckInCelebration.tsx`**
+- [x] **Step 3.4: 实现组件 `src/components/CheckInCelebration/CheckInCelebration.tsx`**
 
 ```tsx
 import { useEffect } from 'react';
@@ -530,12 +530,12 @@ export function CheckInCelebration({
 }
 ```
 
-- [ ] **Step 3.5: 运行测试确认通过**
+- [x] **Step 3.5: 运行测试确认通过**
 
 运行: `npx vitest run tests/unit/CheckInCelebration.test.tsx`
 预期: PASS — 全部用例绿
 
-- [ ] **Step 3.6: 提交**
+- [x] **Step 3.6: 提交**
 
 ```bash
 git add src/components/CheckInCelebration/ tests/unit/CheckInCelebration.test.tsx
@@ -551,7 +551,7 @@ git commit -m "feat(quotes): 添加 CheckInCelebration 弹窗组件"
 
 > **警告**：不要触碰 Home.tsx 现有逻辑（eyebrow、StreakDisplay、Heatmap、StatsCard、QuickCheckIn、最近打卡列表），仅插入新代码。
 
-- [ ] **Step 4.1: 修改 `src/pages/Home/Home.tsx`**
+- [x] **Step 4.1: 修改 `src/pages/Home/Home.tsx`**
 
 1. 修改 import 行：在 `useState, useEffect` 上追加 `useMemo`：
 
@@ -580,17 +580,17 @@ git commit -m "feat(quotes): 添加 CheckInCelebration 弹窗组件"
 
    （最终位置：在 `</>` 片段内、`{showEnergyBar && ...}` 之后、`<StreakDisplay>` 之前。）
 
-- [ ] **Step 4.2: 运行单测验证既有测试不破**
+- [x] **Step 4.2: 运行单测验证既有测试不破**
 
 运行: `npx vitest run tests/integration/Home.test.tsx`
 预期: PASS — 既有 4 个 Home 集成测试全绿
 
-- [ ] **Step 4.3: 运行构建验证 TS 编译通过**
+- [x] **Step 4.3: 运行构建验证 TS 编译通过**
 
 运行: `npm run build`
 预期: 退出码 0，无 TS 错误
 
-- [ ] **Step 4.4: 提交**
+- [x] **Step 4.4: 提交**
 
 ```bash
 git add src/pages/Home/Home.tsx
@@ -606,7 +606,7 @@ git commit -m "feat(home): 首页 Hero 区注入每日名言"
 
 > **警告**：不要触碰 QuickCheckIn 现有表单逻辑（handleSportClick、validateNote、Modal 中表单渲染），仅在 `handleConfirm` 成功分支**追加**两行。
 
-- [ ] **Step 5.1: 修改 `src/components/QuickCheckIn/QuickCheckIn.tsx`**
+- [x] **Step 5.1: 修改 `src/components/QuickCheckIn/QuickCheckIn.tsx`**
 
 1. 在 import 块末尾（`import styles from './QuickCheckIn.module.css';` 之前）追加两行：
 
@@ -654,22 +654,22 @@ git commit -m "feat(home): 首页 Hero 区注入每日名言"
    />
    ```
 
-- [ ] **Step 5.2: 运行单测验证既有测试不破**
+- [x] **Step 5.2: 运行单测验证既有测试不破**
 
 运行: `npx vitest run tests/integration/QuickCheckIn.test.tsx`
 预期: PASS — 既有 Modal 组件 + 打卡流程集成测试全绿
 
-- [ ] **Step 5.3: 运行全量测试套件**
+- [x] **Step 5.3: 运行全量测试套件**
 
 运行: `npm test`
 预期: 全部测试通过（既有 + 新增 3 个测试文件，共增加约 16 个新测试用例）
 
-- [ ] **Step 5.4: 运行构建验证 TS 编译通过**
+- [x] **Step 5.4: 运行构建验证 TS 编译通过**
 
 运行: `npm run build`
 预期: 退出码 0，无 TS 错误
 
-- [ ] **Step 5.5: 提交**
+- [x] **Step 5.5: 提交**
 
 ```bash
 git add src/components/QuickCheckIn/QuickCheckIn.tsx
@@ -680,17 +680,17 @@ git commit -m "feat(checkin): 打卡成功后弹窗显示鼓励语"
 
 ## Task 6: 最终验证
 
-- [ ] **Step 6.1: 运行全量单元测试**
+- [x] **Step 6.1: 运行全量单元测试**
 
 运行: `npm test`
 预期: 全部测试通过，零失败
 
-- [ ] **Step 6.2: 运行生产构建**
+- [x] **Step 6.2: 运行生产构建**
 
 运行: `npm run build`
 预期: 退出码 0，无 TS 错误，无 Vite 警告
 
-- [ ] **Step 6.3: 手动 dev 验证**
+- [x] **Step 6.3: 手动 dev 验证**
 
 ```bash
 npm run dev
@@ -707,7 +707,7 @@ npm run dev
 
 预期: 全部行为符合上述描述。
 
-- [ ] **Step 6.4: 最终提交（如有遗漏）**
+- [x] **Step 6.4: 最终提交（如有遗漏）**
 
 若 Step 6.1-6.3 通过、无遗漏文件：
 
