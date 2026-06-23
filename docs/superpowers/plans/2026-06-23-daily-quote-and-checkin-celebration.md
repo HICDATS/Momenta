@@ -2,6 +2,7 @@
 change: daily-quote-and-checkin-celebration
 design-doc: docs/superpowers/specs/2026-06-23-daily-quote-and-checkin-celebration-design.md
 base-ref: b472ca090233ce70f60930ce6bee6161f4e22e48
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 # Daily Quote & Check-in Celebration Implementation Plan
@@ -14,6 +15,7 @@ base-ref: b472ca090233ce70f60930ce6bee6161f4e22e48
 
 **Tech Stack:** React 18 + TypeScript + Vitest + React Testing Library + date-fns + CSS Modules
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## File Structure
@@ -44,6 +46,7 @@ base-ref: b472ca090233ce70f60930ce6bee6161f4e22e48
 - 复用 `useMemo`（避免 Home 重渲染时重选名言）
 - 复用 `format` from `date-fns`（生成 `yyyy-MM-dd`）
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## Task 1: 文案数据与选择器
@@ -216,6 +219,7 @@ git add src/constants/quotes.ts \
 git commit -m "feat(quotes): 添加每日名言与鼓励语文案池及选择器"
 ```
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## Task 2: DailyQuote 组件
@@ -331,6 +335,7 @@ git add src/components/DailyQuote/ tests/unit/DailyQuote.test.tsx
 git commit -m "feat(quotes): 添加 DailyQuote 展示组件"
 ```
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## Task 3: CheckInCelebration 组件
@@ -542,6 +547,7 @@ git add src/components/CheckInCelebration/ tests/unit/CheckInCelebration.test.ts
 git commit -m "feat(quotes): 添加 CheckInCelebration 弹窗组件"
 ```
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## Task 4: 集成到 Home 页
@@ -597,6 +603,7 @@ git add src/pages/Home/Home.tsx
 git commit -m "feat(home): 首页 Hero 区注入每日名言"
 ```
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## Task 5: 集成到 QuickCheckIn
@@ -676,6 +683,7 @@ git add src/components/QuickCheckIn/QuickCheckIn.tsx
 git commit -m "feat(checkin): 打卡成功后弹窗显示鼓励语"
 ```
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## Task 6: 最终验证
@@ -717,6 +725,7 @@ git status  # 确认无未提交修改
 
 预期: `nothing to commit, working tree clean`
 
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
 ---
 
 ## Self-Review（已完成）

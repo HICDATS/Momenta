@@ -2,6 +2,8 @@
 comet_change: daily-quote-and-checkin-celebration
 role: technical-design
 canonical_spec: openspec
+archived-with: 2026-06-23-daily-quote-and-checkin-celebration
+status: final
 ---
 
 # Daily Quote & Check-in Celebration — Technical Design
